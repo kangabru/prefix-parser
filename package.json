@@ -1,13 +1,13 @@
 {
   "name": "prefix-parser",
   "version": "1.0.0",
-  "description": "Easily parse Discord prefix commands",
+  "author": "Kangabru",
+  "license": "MIT",
+  "description": "The easiest way to parse and validate Discord prefix commands",
   "main": "index.js",
   "scripts": {
     "test": "tsc && jest"
   },
-  "author": "Scott Gibbs",
-  "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-typescript": "^7.15.0",
