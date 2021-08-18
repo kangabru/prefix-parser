@@ -19,7 +19,7 @@ export default function prefix(...[prefix, args = []]: PrefixParserWrapArgs) {
 /**
  * Wraps the {@link DiscordPrefixParser} class to provide an easy to use fluent interface.
  * @example
- * let [args, error] = prefix('!cmd')
+ * const [args, error] = prefix('!cmd')
  *     .int("Age")
  *     .float("Height")
  *     .text("Name")

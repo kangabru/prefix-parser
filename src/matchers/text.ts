@@ -38,7 +38,7 @@ export class RestArg<T = string> extends BaseArg<T> {
  * Matches on one more words separated by spaces and that contain characters a-z, 0-9, and _.
  *
  * @example
- * let args = prefix('!cmd').word('name').parse('!cmd Jim Bob rules')
+ * const args = prefix('!cmd').word('name').parse('!cmd Jim Bob rules')
  * console.log(args) // 'Jim'
  *
  * args = prefix('!cmd').words('name', 2).parse('!cmd Jim Bob rules')

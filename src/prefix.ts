@@ -45,7 +45,7 @@ export class DiscordPrefixParser {
         text = text.replace(this.prefix, '').trim()
         for (const arg of this.args) {
             try {
-                let [value, rest] = arg.parse(text)
+                const [value, rest] = arg.parse(text)
                 values.push(value)
                 text = rest
             } catch (error) {

@@ -16,7 +16,7 @@ test('ignores command', () => {
 })
 
 test('prefix - parse via fluent interface', () => {
-    let [args, error] = prefix('!cmd')
+    const [args, error] = prefix('!cmd')
         .int("Age")
         .float("Height")
         .text("Name")
@@ -47,7 +47,7 @@ test('prefix - parse via classes', () => {
 })
 
 test('prefix - many commands flag true', () => {
-    let [args, error] = prefix('!cmd')
+    const [args, error] = prefix('!cmd')
         .text("Name")
         .int("Age")
         .float("Height")
@@ -62,15 +62,15 @@ test('prefix - many commands flag true', () => {
 })
 
 test('prefix - many commands flag false', () => {
-    let [args, error] = prefix('!cmd')
+    const [args, error] = prefix('!cmd')
         .text("Name")
         .int("Age")
         .float("Height")
         .flagTrue("Male", '--male', '-m')
         .mentionUser("User")
-        .mentionRole("Fav Role")
-        .mentionChannel("Fav Channel")
-        .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <@#13579>")
+        .mentionRole("Role")
+        .mentionChannel("Channel")
+        .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <@#13579> Extra")
 
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8, false, '12345', '24680', '13579'])
