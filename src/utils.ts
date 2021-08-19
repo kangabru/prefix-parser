@@ -19,7 +19,7 @@ export function intArg(num: number) {
 }
 
 export function isVoid(val: any) {
-    return val === null || val === undefined
+    return val === null || val === undefined || val === NaN
 }
 
 export function isPopulated(val: any) {

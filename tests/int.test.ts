@@ -72,7 +72,7 @@ test('arg int max', () => {
     }).toThrow("'5' must be a number")
 })
 
-test('arg int max', () => {
+test('arg int min/max', () => {
     expect(() => {
         prefix('!cmd').int('Age', 10, 5)
     }).toThrow("Min value '10' must be less than '5'")

@@ -1,5 +1,7 @@
 import prefix from '../src/index';
 
+// Text
+
 test('help 1 word', () => {
     expect(prefix('!cmd').word('Name').help()).toContain('<Name {1 word}>')
 })
@@ -19,6 +21,8 @@ test('help text', () => {
 test('help rest', () => {
     expect(prefix('!cmd').rest('Name').help()).toContain('<Name {remaining}>')
 })
+
+// Int
 
 test('help int', () => {
     expect(prefix('!cmd').int('Age').help()).toContain('<Age {int}>')
@@ -50,4 +54,42 @@ test('help int min/max neg', () => {
 
 test('help int min/max neg alt', () => {
     expect(prefix('!cmd').int('Age', -10, -5).help()).toContain('<Age {int -10~-5}>')
+})
+
+test('help int float', () => {
+    expect(prefix('!cmd').int('Age', 5.9, 10.9).help()).toContain('<Age {int 5~10}>')
+})
+
+// Float
+
+test('help float', () => {
+    expect(prefix('!cmd').float('Age').help()).toContain('<Age {float}>')
+})
+
+test('help float min 1.2', () => {
+    expect(prefix('!cmd').float('Age', 1.2).help()).toContain('<Age {float >1.2}>')
+})
+
+test('help float min 5.6', () => {
+    expect(prefix('!cmd').float('Age', 5.6).help()).toContain('<Age {float >5.6}>')
+})
+
+test('help float max 1.2', () => {
+    expect(prefix('!cmd').float('Age', null, 1.2).help()).toContain('<Age {float <1.2}>')
+})
+
+test('help float max 5.6', () => {
+    expect(prefix('!cmd').float('Age', null, 5.6).help()).toContain('<Age {float <5.6}>')
+})
+
+test('help float min/max pos', () => {
+    expect(prefix('!cmd').float('Age', 1.2, 5.6).help()).toContain('<Age {float 1.2~5.6}>')
+})
+
+test('help float min/max neg', () => {
+    expect(prefix('!cmd').float('Age', -5.6, 1.2).help()).toContain('<Age {float -5.6~1.2}>')
+})
+
+test('help float min/max neg alt', () => {
+    expect(prefix('!cmd').float('Age', -11.2, -5.6).help()).toContain('<Age {float -11.2~-5.6}>')
 })
