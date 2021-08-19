@@ -1,3 +1,4 @@
+import { assert, isNum, isPopulated } from "../utils";
 import BaseArg, { ParseResponse } from "./base";
 
 type MinMaxArgs = [name: string, min?: number, max?: number]
@@ -37,6 +38,21 @@ export type IntegerArgs = MinMaxArgs
 export class IntegerArg extends NumberArg {
     constructor(...[name, min, max]: IntegerArgs) {
         super(name, min, max)
+
+        if (isPopulated(min)) assert(isNum(min), `Value '${min}' must be a number`)
+        if (isPopulated(max)) assert(isNum(max), `Value '${max}' must be a number`)
+        if (isPopulated(min) && isPopulated(max))
+            assert(min < max, `Min value '${min}' must be less than '${max}'`)
+    }
+
+    help() {
+        const hasMin = isNum(this.min), hasMax = isNum(this.max)
+        const hasBoth = hasMin && hasMax
+        const extra = hasBoth ? ` ${this.min}~${this.max}`
+            : hasMin ? ` >${this.min}`
+                : hasMax ? ` <${this.max}`
+                    : ''
+        return `<${this.name} {int${extra}}>`
     }
 }
 

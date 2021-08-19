@@ -59,3 +59,21 @@ test('matches int - fail float', () => {
     expect(error).toBe(null)
     expect(args).toEqual([25])
 })
+
+test('arg int min', () => {
+    expect(() => {
+        prefix('!cmd').int('Age', '5' as any)
+    }).toThrow("'5' must be a number")
+})
+
+test('arg int max', () => {
+    expect(() => {
+        prefix('!cmd').int('Age', null, '5' as any)
+    }).toThrow("'5' must be a number")
+})
+
+test('arg int max', () => {
+    expect(() => {
+        prefix('!cmd').int('Age', 10, 5)
+    }).toThrow("Min value '10' must be less than '5'")
+})
