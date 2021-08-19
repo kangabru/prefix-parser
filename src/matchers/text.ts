@@ -1,6 +1,6 @@
 import { NameArg, NameArgAnd } from "../types"
 import { assertGreaterThan, intArg } from "../utils"
-import BaseArg, { ParseResponse, RegexArg } from "./base"
+import BaseArg, { ParseResponse, RegexArg, ValidateIndexArgs } from "./base"
 
 export type TextArgs = NameArg
 export type WordArgs = NameArg
@@ -31,6 +31,10 @@ export class RestArg<T = string> extends BaseArg<T> {
         if (!text.length)
             throw Error("Text cannot be empty")
         return [text as any, ""]
+    }
+
+    validateIndex(...[argIndex, argCount]: ValidateIndexArgs) {
+        if (argIndex !== (argCount - 1)) throw Error(`'${this.name}' must be the last argument`)
     }
 }
 

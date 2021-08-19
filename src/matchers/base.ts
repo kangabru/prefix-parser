@@ -4,6 +4,8 @@ import { assertPositive, intArg } from "../utils";
 export type ParseResponse<T> = [T, string]
 export type BaseArgs = NameArg
 
+export type ValidateIndexArgs = [argIndex: number, argCount: number]
+
 /** The core 'arg' class which others must inherit from and implement. */
 export default class BaseArg<T> {
     /** The name of the argument seen by end users via the help flag and in errors. */
@@ -16,13 +18,21 @@ export default class BaseArg<T> {
 
     /** Parses as string for the next argument and returns the parsed value and remaining text. */
     parse(_: string): ParseResponse<T> {
-        throw Error("BaseArg 'parse()' not implemented")
+        throw Error("Arg 'parse()' function not implemented")
     }
 
     /** Returns the help syntax seen by end users via the help flag and in errors. */
     help(): string {
-        throw Error("BaseArg 'help()' not implemented")
+        throw Error("Arg 'help()' function not implemented")
     }
+
+    /** Returns an example of this argument as seen by end users via the help flag. */
+    example(): string {
+        throw Error("Arg 'example()' function not implemented")
+    }
+
+    /** (Optional) Validate the position of the arg. This should throw an error upon failure. */
+    validateIndex(..._: ValidateIndexArgs): void { }
 }
 
 export type RegexArgs = NameArgAnd<[regex: RegExp, group?: number]>

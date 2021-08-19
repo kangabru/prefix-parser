@@ -47,3 +47,13 @@ test('match sentence + word', () => {
     expect(error).toContain('1 word not found')
     expect(args).toEqual(null)
 })
+
+test('rest as last argument - pass', () => {
+    prefix('!cmd').rest('Name')
+})
+
+test('rest as last argument - fail', () => {
+    expect(() => {
+        prefix('!cmd').rest('Name').int('Age')
+    }).toThrow("'Name' must be the last argument");
+})
