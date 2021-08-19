@@ -1,7 +1,7 @@
 import BaseArg from "./matchers/base";
 import { HelpFlagArg } from "./matchers/flag";
 
-export type PrefixParserArgs = [prefix: string, args?: BaseArg<any>[]]
+export type PrefixParserArgs = [command: string, name?: string]
 
 /**
  * Parses Discord messages into Javascript values.
@@ -22,15 +22,21 @@ export type PrefixParserArgs = [prefix: string, args?: BaseArg<any>[]]
  */
 export class DiscordPrefixParser {
     private prefix: string;
+    private name: string;
     private args: BaseArg<any>[];
 
-    constructor(...[prefix, args = []]: PrefixParserArgs) {
+    constructor(...[prefix, name]: PrefixParserArgs) {
         this.prefix = prefix
-        this.args = args
+        this.name = name
+        this.args = []
     }
 
-    addArg<T>(arg: BaseArg<T>) {
-        this.args.push(arg)
+    add<T>(...args: BaseArg<T>[]) {
+        this.args.push(...args)
+        for (let i = 0; i < this.args.length; i++) {
+            const arg = this.args[i];
+            arg?.validateIndex(i, this.args.length)
+        }
         return this;
     }
 
@@ -43,7 +49,8 @@ export class DiscordPrefixParser {
 
         const values = []
         text = text.replace(this.prefix, '').trim()
-        for (const arg of this.args) {
+        for (let i = 0; i < this.args.length; i++) {
+            const arg = this.args[i];
             try {
                 const [value, rest] = arg.parse(text)
                 values.push(value)
@@ -57,7 +64,9 @@ export class DiscordPrefixParser {
     }
 
     help(): string {
-        const args = this.args.map(a => a.help()).join(' ')
-        return `${this.prefix} ${args}`
+        const title = this.name ? `** ${this.prefix} **` : `** \`${this.prefix}\` - ${this.name} **`
+        const argsHelp = this.args.map(a => a.help()).join(' ')
+        const argsExample = this.args.map(a => a.example()).join(' ')
+        return [title, argsHelp, argsExample].join('\n')
     }
 }

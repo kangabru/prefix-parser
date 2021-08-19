@@ -185,11 +185,13 @@ prefix('!cmd')
 Sick of the fluent interface or want dynamic args? Provide them via an array instead:
 
 ```js
-prefix('!cmd', [
-    new IntegerArg("Age"),
-    new FloatArg("Height"),
-    new RestArg("Name"),
-]).parse("!cmd 20 1.8 Jim Bob") // >> [20, 1.8, 'Jim Bob']
+prefix('!cmd')
+    .args(
+        new IntegerArg("Age"),
+        new FloatArg("Height"),
+        new RestArg("Name"),
+    )
+    .parse("!cmd 20 1.8 Jim Bob") // >> [20, 1.8, 'Jim Bob']
 ```
 
 ---

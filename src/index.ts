@@ -3,23 +3,21 @@ import { FlagArgs, FlagFalseArg, FlagTrueArg } from "./matchers/flag";
 import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg } from "./matchers/mention";
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
 import { RestArg, TextArg, TextArgs, WordArgs, WordsArg, WordsArgs } from "./matchers/text";
-import { DiscordPrefixParser } from "./prefix";
-
-type PrefixParserWrapArgs = [prefix: string, args?: BaseArg<any>[]]
+import { DiscordPrefixParser, PrefixParserArgs } from "./prefix";
 
 /**
  * Start a prefix command and use the fluent interface to add arguments.
  * @param prefix - The prefix string expected at the start of the command.
- * @param args - (Optional) An array of argument classes to add arguments without the fluent interface.
+ * @param description - (Optional) A longer description of the command to display to end users via the help command.
  */
-export default function prefix(...[prefix, args = []]: PrefixParserWrapArgs) {
-    return new DiscordPrefixParserFluentInterface(prefix, args)
+export default function prefix(...args: PrefixParserArgs) {
+    return new DiscordPrefixParserFluentInterface(new DiscordPrefixParser(...args))
 }
 
 /**
  * Wraps the {@link DiscordPrefixParser} class to provide an easy to use fluent interface.
  * @example
- * const [args, error] = prefix('!cmd')
+ * const [args, error] = prefix('!cmd', 'My command')
  *     .int("Age")
  *     .float("Height")
  *     .text("Name")
@@ -27,20 +25,21 @@ export default function prefix(...[prefix, args = []]: PrefixParserWrapArgs) {
  * console.log(args) // [20, 1.8, 'Jim Bob']
  */
 export class DiscordPrefixParserFluentInterface {
-    private _parser: DiscordPrefixParser;
+    private parser: DiscordPrefixParser;
 
-    constructor(...[prefix, args = []]: PrefixParserWrapArgs) {
-        this._parser = new DiscordPrefixParser(prefix, args)
+    constructor(parser: DiscordPrefixParser) {
+        this.parser = parser
     }
 
-    parser() {
-        return this._parser
+    add<T>(...args: BaseArg<T>[]) {
+        this.parser.add(...args)
+        return this
     }
 
     parse(text: string): ParseResponse<any[]> {
         let args = null, error = null;
         try {
-            args = this._parser.parse(text)
+            args = this.parser.parse(text)
         } catch (e) {
             error = e.toString()
         }
@@ -48,62 +47,62 @@ export class DiscordPrefixParserFluentInterface {
     }
 
     int(...args: IntegerArgs) {
-        this._parser.addArg(new IntegerArg(...args))
+        this.parser.add(new IntegerArg(...args))
         return this
     }
 
     float(...args: FloatArgs) {
-        this._parser.addArg(new FloatArg(...args))
+        this.parser.add(new FloatArg(...args))
         return this
     }
 
     rest(...args: TextArgs) {
-        this._parser.addArg(new RestArg(...args))
+        this.parser.add(new RestArg(...args))
         return this
     }
 
     text(...args: TextArgs) {
-        this._parser.addArg(new TextArg(...args))
+        this.parser.add(new TextArg(...args))
         return this
     }
 
     word(...args: WordArgs) {
-        this._parser.addArg(new WordsArg(...args))
+        this.parser.add(new WordsArg(...args))
         return this
     }
 
     words(...args: WordsArgs) {
-        this._parser.addArg(new WordsArg(...args))
+        this.parser.add(new WordsArg(...args))
         return this
     }
 
     regex(...args: RegexArgs) {
-        this._parser.addArg(new RegexArg(...args))
+        this.parser.add(new RegexArg(...args))
         return this
     }
 
     user(...args: BaseArgs) {
-        this._parser.addArg(new DiscordUserMentionArg(...args))
+        this.parser.add(new DiscordUserMentionArg(...args))
         return this
     }
 
     role(...args: BaseArgs) {
-        this._parser.addArg(new DiscordRoleMentionArg(...args))
+        this.parser.add(new DiscordRoleMentionArg(...args))
         return this
     }
 
     channel(...args: BaseArgs) {
-        this._parser.addArg(new DiscordChannelMentionArg(...args))
+        this.parser.add(new DiscordChannelMentionArg(...args))
         return this
     }
 
     flagTrue(...args: FlagArgs) {
-        this._parser.addArg(new FlagTrueArg(...args))
+        this.parser.add(new FlagTrueArg(...args))
         return this
     }
 
     flagFalse(...args: FlagArgs) {
-        this._parser.addArg(new FlagFalseArg(...args))
+        this.parser.add(new FlagFalseArg(...args))
         return this
     }
 }

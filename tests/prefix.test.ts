@@ -27,11 +27,13 @@ test('prefix - parse via fluent interface', () => {
 })
 
 test('prefix - parse via args array', () => {
-    const [args, error] = prefix('!cmd', [
-        new IntegerArg("Age"),
-        new FloatArg("Height"),
-        new RestArg("Name"),
-    ]).parse("!cmd 20 1.8 Jim Bob")
+    const [args, error] = prefix('!cmd')
+        .add(
+            new IntegerArg("Age"),
+            new FloatArg("Height"),
+            new RestArg("Name"),
+        )
+        .parse("!cmd 20 1.8 Jim Bob")
 
     expect(error).toBe(null)
     expect(args).toEqual([20, 1.8, 'Jim Bob'])
@@ -39,9 +41,9 @@ test('prefix - parse via args array', () => {
 
 test('prefix - parse via classes', () => {
     const builder = new DiscordPrefixParser('!cmd')
-    builder.addArg(new IntegerArg("Age"))
-    builder.addArg(new FloatArg("Height"))
-    builder.addArg(new RestArg("Name"))
+    builder.add(new IntegerArg("Age"))
+    builder.add(new FloatArg("Height"))
+    builder.add(new RestArg("Name"))
     const args = builder.parse("!cmd 20 1.8 Jim Bob")
     expect(args).toEqual([20, 1.8, 'Jim Bob'])
 })
