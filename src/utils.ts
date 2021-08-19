@@ -17,3 +17,15 @@ export function assertGreaterThan(argValue: number, boundValue: number) {
 export function intArg(num: number) {
     return Math.abs(Math.round(num))
 }
+
+export function isVoid(val: any) {
+    return val === null || val === undefined
+}
+
+export function isPopulated(val: any) {
+    return !isVoid(val)
+}
+
+export function isNum(val: any) {
+    return typeof val === 'number'
+}

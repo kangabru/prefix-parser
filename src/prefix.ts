@@ -33,10 +33,16 @@ export class DiscordPrefixParser {
 
     add<T>(...args: BaseArg<T>[]) {
         this.args.push(...args)
+
+        // Validate arg definition
+        for (const arg of args) arg.validateArg()
+
+        // Validate arg index
         for (let i = 0; i < this.args.length; i++) {
             const arg = this.args[i];
             arg?.validateIndex(i, this.args.length)
         }
+
         return this;
     }
 
@@ -63,10 +69,16 @@ export class DiscordPrefixParser {
         return values
     }
 
+    title() {
+        return this.name ? `** \`${this.prefix}\` - ${this.name} **` : `** ${this.prefix} **`
+    }
+
     help(): string {
-        const title = this.name ? `** ${this.prefix} **` : `** \`${this.prefix}\` - ${this.name} **`
         const argsHelp = this.args.map(a => a.help()).join(' ')
-        const argsExample = this.args.map(a => a.example()).join(' ')
-        return [title, argsHelp, argsExample].join('\n')
+        return [this.prefix, argsHelp].join(' ')
+    }
+
+    toString() {
+        return [this.title(), this.help()].join('\n')
     }
 }

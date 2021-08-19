@@ -17,6 +17,10 @@ export class TextArg<T = string> extends RegexArg<T> {
     constructor(...[name]: TextArgs) {
         super(name, /[a-zA-Z_-\s]+/)
     }
+
+    help() {
+        return `<${this.name} {text}>`
+    }
 }
 
 /**
@@ -35,6 +39,10 @@ export class RestArg<T = string> extends BaseArg<T> {
 
     validateIndex(...[argIndex, argCount]: ValidateIndexArgs) {
         if (argIndex !== (argCount - 1)) throw Error(`'${this.name}' must be the last argument`)
+    }
+
+    help() {
+        return `<${this.name} {remaining}>`
     }
 }
 
@@ -67,5 +75,10 @@ export class WordsArg<T = string> extends RegexArg<T> {
             const s = this.words === 1 ? '' : 's'
             throw Error(`${this.words} word${s} not found`)
         }
+    }
+
+    help() {
+        const s = this.words === 1 ? '' : 's'
+        return `<${this.name} {${this.words} word${s}}>`
     }
 }

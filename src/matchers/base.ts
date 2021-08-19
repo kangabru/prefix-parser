@@ -1,5 +1,5 @@
 import { NameArg, NameArgAnd } from "../types";
-import { assertPositive, intArg } from "../utils";
+import { assert, assertPositive, intArg } from "../utils";
 
 export type ParseResponse<T> = [T, string]
 export type BaseArgs = NameArg
@@ -12,7 +12,8 @@ export default class BaseArg<T> {
     name: string;
 
     constructor(...[name]: BaseArgs) {
-        if (!name) throw Error("BaseArg 'name' not provided")
+        assert(!!name, `Arg name ${name} not provided`)
+        assert(name.length >= 3, `Arg name ${name} should be 3+ characters`)
         this.name = name
     }
 
@@ -29,6 +30,10 @@ export default class BaseArg<T> {
     /** Returns an example of this argument as seen by end users via the help flag. */
     example(): string {
         throw Error("Arg 'example()' function not implemented")
+    }
+
+    validateArg() {
+        assert(this.help().length > 0, 'Help message should be populated')
     }
 
     /** (Optional) Validate the position of the arg. This should throw an error upon failure. */
