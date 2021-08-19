@@ -82,17 +82,17 @@ export class DiscordPrefixParserFluentInterface {
         return this
     }
 
-    mentionUser(...args: BaseArgs) {
+    user(...args: BaseArgs) {
         this._parser.addArg(new DiscordUserMentionArg(...args))
         return this
     }
 
-    mentionRole(...args: BaseArgs) {
+    role(...args: BaseArgs) {
         this._parser.addArg(new DiscordRoleMentionArg(...args))
         return this
     }
 
-    mentionChannel(...args: BaseArgs) {
+    channel(...args: BaseArgs) {
         this._parser.addArg(new DiscordChannelMentionArg(...args))
         return this
     }
