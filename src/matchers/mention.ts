@@ -1,4 +1,4 @@
-import { ParseResponse, RegexArg } from "./base"
+import { ArgParseResponse, RegexArg } from "./base"
 
 /**
  * Matches a Discord user mention like <@!12345> or <@12345>.
@@ -9,7 +9,7 @@ export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
         super(name, /^\<\@\!?(\d+)\>/, 1)
     }
 
-    parse(text: string): ParseResponse<T> {
+    parse(text: string): ArgParseResponse<T> {
         try {
             return super.parse(text)
         } catch (error) {
@@ -27,7 +27,7 @@ export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
         super(name, /^\<\@\&(\d+)\>/, 1)
     }
 
-    parse(text: string): ParseResponse<T> {
+    parse(text: string): ArgParseResponse<T> {
         try {
             return super.parse(text)
         } catch (error) {
@@ -45,7 +45,7 @@ export class DiscordChannelMentionArg<T = string> extends RegexArg<T> {
         super(name, /^\<\@\#(\d+)\>/, 1)
     }
 
-    parse(text: string): ParseResponse<T> {
+    parse(text: string): ArgParseResponse<T> {
         try {
             return super.parse(text)
         } catch (error) {

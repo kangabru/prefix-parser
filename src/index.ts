@@ -1,4 +1,4 @@
-import BaseArg, { BaseArgs, ParseResponse, RegexArg, RegexArgs } from "./matchers/base";
+import BaseArg, { BaseArgs, RegexArg, RegexArgs } from "./matchers/base";
 import { FlagArgs, FlagFalseArg, FlagTrueArg } from "./matchers/flag";
 import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg } from "./matchers/mention";
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
@@ -36,7 +36,14 @@ export class DiscordPrefixParserFluentInterface {
         return this
     }
 
-    parse(text: string): ParseResponse<any[]> {
+    /**
+     * Parses a Discord message and tries to parse it argument values.
+     * @param text - The Discord message to try parse against the added arguments.
+     * @returns An array with values [<args>, <error>].
+     *      <args> - 'null' if arguments were not parsed, or an array of parsed argument values of the same length and order of the added arguments.
+     *      <error> - 'null' if no error was thrown, or an error message that should be sent to the end user to help them correct and retry the command.
+     */
+    parse(text: string): [any[] | null, string | null] {
         let args = null, error = null;
         try {
             args = this.parser.parse(text)

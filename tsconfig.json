@@ -1,14 +1,13 @@
 {
+    "extends": "@tsconfig/node14/tsconfig.json",
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": ".",
         "sourceMap": false,
-        "target": "es2017",
-        "moduleResolution": "node",
+        "declaration": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "module": "es2015"
     },
     "include": [
         "src/**/*.ts"

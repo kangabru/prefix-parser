@@ -22,7 +22,7 @@ export type PrefixParserArgs = [command: string, name?: string]
  */
 export class DiscordPrefixParser {
     private prefix: string;
-    private name: string;
+    private name?: string;
     private args: BaseArg<any>[];
 
     constructor(...[prefix, name]: PrefixParserArgs) {
@@ -46,6 +46,12 @@ export class DiscordPrefixParser {
         return this;
     }
 
+    /**
+     * Parses a Discord message and tries to parse it argument values.
+     * @param text - The Discord message to try parse against the added arguments.
+     * @returns 'null' if the command isn't the prefix command, or an array of parsed argument values of the same length and order of the added arguments.
+     * @throws A string error that can be sent to end users to help them correct the command and try again.
+     */
     parse(text: string): any[] | null {
         const help = new HelpFlagArg().parse(text)[0]
         if (help) throw Error(this.help())

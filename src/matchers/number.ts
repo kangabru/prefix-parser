@@ -1,26 +1,26 @@
 import { assert, isNum, isPopulated, isVoid } from "../utils";
-import BaseArg, { ParseResponse } from "./base";
+import BaseArg, { ArgParseResponse } from "./base";
 
 type MinMaxArgs = [name: string, min?: number, max?: number]
 type NumberArgs = [name: string, min?: number, max?: number, float?: boolean]
 
 /** Matches the next valid number using 'parseInt' and 'parseFloat' for the respective type. */
 class NumberArg<T = number> extends BaseArg<T> {
-    name: string; min: number; max: number; float: boolean;
+    min?: number; max?: number; float: boolean;
 
     constructor(...[name, min, max, float = false]: NumberArgs) {
         super(name)
         this.float = float
-        this.min = (float || isVoid(min)) ? min : Math.floor(min)
-        this.max = (float || isVoid(max)) ? max : Math.floor(max)
+        this.min = (float || isVoid(min)) ? min : Math.floor(min!)
+        this.max = (float || isVoid(max)) ? max : Math.floor(max!)
 
         if (isPopulated(min)) assert(isNum(min), `Value '${min}' must be a number`)
         if (isPopulated(max)) assert(isNum(max), `Value '${max}' must be a number`)
         if (isPopulated(min) && isPopulated(max))
-            assert(min < max, `Min value '${min}' must be less than '${max}'`)
+            assert(min! < max!, `Min value '${min}' must be less than '${max}'`)
     }
 
-    parse(text: string): ParseResponse<T> {
+    parse(text: string): ArgParseResponse<T> {
         const re = /^-?[\d\.]+/g // Look for numbers like -5, 5, -5.0, 5.0
         const matches = text.trim().match(re)
         if (!matches) throw Error("Number not found")
@@ -30,8 +30,8 @@ class NumberArg<T = number> extends BaseArg<T> {
         const value = this.float ? parseFloat(match) : parseInt(match)
 
         if (value === NaN) throw Error(`Number '${match}' could not be parsed as a number.`)
-        if (this.min !== null && value < this.min) throw Error(`'${match}' cannot be less than '${this.min}'.`)
-        if (this.max !== null && value > this.max) throw Error(`'${match}' cannot be more than '${this.max}'.`)
+        if (this.min !== null && value < this.min!) throw Error(`'${match}' cannot be less than '${this.min}'.`)
+        if (this.max !== null && value > this.max!) throw Error(`'${match}' cannot be more than '${this.max}'.`)
 
         return [value as any, rest]
     }

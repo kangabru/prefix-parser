@@ -18,14 +18,14 @@ export function intArg(num: number) {
     return Math.abs(Math.round(num))
 }
 
-export function isVoid(val: any) {
-    return val === null || val === undefined || val === NaN
+export function isVoid<T>(val: T): T extends void ? true : false {
+    return (val === null || val === undefined || Number.isNaN(val)) as any
 }
 
-export function isPopulated(val: any) {
-    return !isVoid(val)
+export function isPopulated<T>(val: T): T extends true ? true : false {
+    return !isVoid(val) as any
 }
 
 export function isNum(val: any) {
-    return typeof val === 'number'
+    return typeof val === 'number' && isPopulated(val)
 }

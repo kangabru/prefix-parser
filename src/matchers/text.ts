@@ -1,6 +1,6 @@
 import { NameArg, NameArgAnd } from "../types"
 import { assertGreaterThan, intArg } from "../utils"
-import BaseArg, { ParseResponse, RegexArg, ValidateIndexArgs } from "./base"
+import BaseArg, { ArgParseResponse, RegexArg, ValidateIndexArgs } from "./base"
 
 export type TextArgs = NameArg
 export type WordArgs = NameArg
@@ -31,7 +31,7 @@ export class TextArg<T = string> extends RegexArg<T> {
  * console.log(args) // 'Jim Bob! is my name'
  */
 export class RestArg<T = string> extends BaseArg<T> {
-    parse(text: string): ParseResponse<T> {
+    parse(text: string): ArgParseResponse<T> {
         if (!text.length)
             throw Error("Text cannot be empty")
         return [text as any, ""]
@@ -68,7 +68,7 @@ export class WordsArg<T = string> extends RegexArg<T> {
         assertGreaterThan(_words, 0)
     }
 
-    parse(text: string): ParseResponse<T> {
+    parse(text: string): ArgParseResponse<T> {
         try {
             return super.parse(text)
         } catch (error) {

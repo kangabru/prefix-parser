@@ -1,7 +1,7 @@
 import { NameArg, NameArgAnd } from "../types";
 import { assert, assertPositive, intArg } from "../utils";
 
-export type ParseResponse<T> = [T, string]
+export type ArgParseResponse<T> = [T, string]
 export type BaseArgs = NameArg
 
 export type ValidateIndexArgs = [argIndex: number, argCount: number]
@@ -18,7 +18,7 @@ export default class BaseArg<T> {
     }
 
     /** Parses as string for the next argument and returns the parsed value and remaining text. */
-    parse(_: string): ParseResponse<T> {
+    parse(_: string): ArgParseResponse<T> {
         throw Error("Arg 'parse()' function not implemented")
     }
 
@@ -60,7 +60,7 @@ export class RegexArg<T = string> extends BaseArg<T> {
         assertPositive(group)
     }
 
-    parse(text: string): ParseResponse<T> {
+    parse(text: string): ArgParseResponse<T> {
         const matches = text.trim().match(this.regex)
         if (!matches) throw Error("Expression not found")
         if (this.group >= matches.length) throw Error(`Could not get group '${this.group}' from ${matches.length} matches`)
