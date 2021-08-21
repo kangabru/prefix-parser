@@ -1,6 +1,6 @@
 import prefix from '../src/index';
 import { FloatArg, IntegerArg } from '../src/matchers/number';
-import { RestArg, TextArg } from '../src/matchers/text';
+import { TextArg } from '../src/matchers/text';
 import { DiscordPrefixParser } from '../src/prefix';
 
 test('matches command', () => {
@@ -58,7 +58,7 @@ test('prefix - parse via classes', () => {
 })
 
 test('prefix - many commands flag true', () => {
-    const [args, error] = prefix('!cmd')
+    const cmd = prefix('!cmd')
         .text("Name")
         .int("Age")
         .float("Height")
@@ -66,8 +66,11 @@ test('prefix - many commands flag true', () => {
         .user("User")
         .role("Fav Role")
         .channel("Fav Channel")
-        .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <#13579> -m")
 
+    expect(cmd.help()).toBe('!cmd <Name {text}> <Age {int}> <Height {float}> <Male {--male/-m}> <User {@user}> <Fav Role {@role}> <Fav Channel {#channel}>')
+    expect(cmd.example()).toBe('!cmd lorem ipsum 50 50.00 <@12345> <@&12345> <#12345> --male')
+
+    const [args, error] = cmd.parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <#13579> -m")
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8, true, '12345', '24680', '13579'])
 })

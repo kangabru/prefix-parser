@@ -4,6 +4,8 @@ import { assert, assertPositive, intArg, isPopulated } from "../utils";
 export type ArgParseResponse<T> = [T, string]
 export type BaseArgs = NameArg
 
+export type Arg = BaseArg<any>
+
 export type ValidateIndexArgs = [argIndex: number, argCount: number]
 
 /** The core 'arg' class which others must inherit from and implement. */

@@ -1,5 +1,5 @@
-import BaseArg from "./matchers/base";
-import { HelpFlagArg } from "./matchers/flag";
+import BaseArg, { Arg } from "./matchers/base";
+import { FlagArg, HelpFlagArg } from "./matchers/flag";
 
 export type PrefixParserArgs = [command: string, name?: string]
 
@@ -85,7 +85,15 @@ export class DiscordPrefixParser {
     }
 
     example(): string {
-        const argsHelp = this.args.map(a => a.example()).join(' ')
+        // Separate flags because they're optional so should be at the end
+        const argsNorm: Arg[] = [], argsFlag: Arg[] = []
+        this.args.forEach(arg => {
+            if ((arg as FlagArg).isFlag)
+                argsFlag.push(arg)
+            else
+                argsNorm.push(arg)
+        })
+        const argsHelp = argsNorm.concat(argsFlag).map(a => a.example()).join(' ')
         return [this.prefix, argsHelp].join(' ')
     }
 

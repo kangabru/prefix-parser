@@ -1,10 +1,12 @@
 import { assert } from "../utils";
 import BaseArg, { ArgParseResponse } from "./base";
 
+export type FlagArg = FlagTrueArg<true | false>
 export type FlagArgs = [name: string, longCommand: string, shortCommand?: string]
 
 /** Returns 'true' if it matches a flag anywhere in the text like '--help' or '-h' (long and short version respectively). */
 export class FlagTrueArg<T = boolean> extends BaseArg<T> {
+    isFlag = true
     long: string; short?: string;
 
     constructor(...[name, longCommand, shortCommand]: FlagArgs) {
