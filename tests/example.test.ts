@@ -120,10 +120,18 @@ test('example mention channel', () => {
 
 // Flag
 
-test('example flag long/short', () => {
-    expect(prefix('!cmd').flagTrue('Yes', '--yes', '-y').example()).toContain('<Yes {--yes/-y}>')
+test('example flag long/short yes', () => {
+    expect(prefix('!cmd').flagTrue('Yes', '--yes', '-y').example()).toContain('--yes')
 })
 
-test('example flag long', () => {
-    expect(prefix('!cmd').flagTrue('Yes', '--yes').example()).toContain('<Yes {--yes}>')
+test('example flag long yes', () => {
+    expect(prefix('!cmd').flagTrue('Yes', '--yes').example()).toContain('--yes')
+})
+
+test('example flag long/short no', () => {
+    expect(prefix('!cmd').flagFalse('Nup', '--nup', '-n').example()).toContain('--nup')
+})
+
+test('example flag long no', () => {
+    expect(prefix('!cmd').flagFalse('Nup', '--nup').example()).toContain('--nup')
 })

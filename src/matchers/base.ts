@@ -1,5 +1,5 @@
 import { NameArg, NameArgAnd } from "../types";
-import { assert, assertPositive, intArg } from "../utils";
+import { assert, assertPositive, intArg, isPopulated, isVoid } from "../utils";
 
 export type ArgParseResponse<T> = [T, string]
 export type BaseArgs = NameArg
@@ -37,7 +37,7 @@ export default class BaseArg<T> {
         assert(this.example().length > 0, 'Example message should be populated')
         const [value, error] = this.parse(this.example())
         assert(!error, 'Parsing the example should not return errors')
-        assert(!!value, 'Parsing the example should return a value')
+        assert(isPopulated(value), 'Parsing the example should return a value')
     }
 
     /** (Optional) Validate the position of the arg. This should throw an error upon failure. */
