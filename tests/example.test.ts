@@ -35,73 +35,53 @@ test('example regex', () => {
 // Int
 
 test('example int', () => {
-    expect(prefix('!cmd').int('Age').example()).toContain('<Age {int}>')
+    expect(prefix('!cmd').int('Age').example()).toContain('50')
 })
 
-test('example int min 0', () => {
-    expect(prefix('!cmd').int('Age', 0).example()).toContain('<Age {int >0}>')
+test('example int min', () => {
+    expect(prefix('!cmd').int('Age', 11).example()).toContain('55')
 })
 
-test('example int min 5', () => {
-    expect(prefix('!cmd').int('Age', 5).example()).toContain('<Age {int >5}>')
-})
-
-test('example int max 0', () => {
-    expect(prefix('!cmd').int('Age', null, 0).example()).toContain('<Age {int <0}>')
-})
-
-test('example int max 5', () => {
-    expect(prefix('!cmd').int('Age', null, 5).example()).toContain('<Age {int <5}>')
+test('example int max', () => {
+    expect(prefix('!cmd').int('Age', null, 11).example()).toContain('5')
 })
 
 test('example int min/max pos', () => {
-    expect(prefix('!cmd').int('Age', 0, 5).example()).toContain('<Age {int 0~5}>')
+    expect(prefix('!cmd').int('Age', 1, 11).example()).toContain('6')
 })
 
 test('example int min/max neg', () => {
-    expect(prefix('!cmd').int('Age', -5, 0).example()).toContain('<Age {int -5~0}>')
-})
-
-test('example int min/max neg alt', () => {
-    expect(prefix('!cmd').int('Age', -10, -5).example()).toContain('<Age {int -10~-5}>')
+    expect(prefix('!cmd').int('Age', -11, -1).example()).toContain('-6')
 })
 
 test('example int float', () => {
-    expect(prefix('!cmd').int('Age', 5.9, 10.9).example()).toContain('<Age {int 5~10}>')
+    expect(prefix('!cmd').int('Age', 1.1, 10.9).example()).toContain('5')
 })
 
 // Float
 
 test('example float', () => {
-    expect(prefix('!cmd').float('Age').example()).toContain('<Age {float}>')
+    expect(prefix('!cmd').float('Age').example()).toContain('50')
 })
 
-test('example float min 1.2', () => {
-    expect(prefix('!cmd').float('Age', 1.2).example()).toContain('<Age {float >1.2}>')
+test('example int min', () => {
+    expect(prefix('!cmd').float('Age', 11.5).example()).toContain('55.75')
 })
 
-test('example float min 5.6', () => {
-    expect(prefix('!cmd').float('Age', 5.6).example()).toContain('<Age {float >5.6}>')
+test('example int max', () => {
+    expect(prefix('!cmd').float('Age', null, 11.5).example()).toContain('5.75')
 })
 
-test('example float max 1.2', () => {
-    expect(prefix('!cmd').float('Age', null, 1.2).example()).toContain('<Age {float <1.2}>')
+test('example int min/max pos', () => {
+    expect(prefix('!cmd').float('Age', 1.5, 11.5).example()).toContain('6.50')
 })
 
-test('example float max 5.6', () => {
-    expect(prefix('!cmd').float('Age', null, 5.6).example()).toContain('<Age {float <5.6}>')
+test('example int min/max neg', () => {
+    expect(prefix('!cmd').float('Age', -11.5, -1.5).example()).toContain('-6.50')
 })
 
-test('example float min/max pos', () => {
-    expect(prefix('!cmd').float('Age', 1.2, 5.6).example()).toContain('<Age {float 1.2~5.6}>')
-})
-
-test('example float min/max neg', () => {
-    expect(prefix('!cmd').float('Age', -5.6, 1.2).example()).toContain('<Age {float -5.6~1.2}>')
-})
-
-test('example float min/max neg alt', () => {
-    expect(prefix('!cmd').float('Age', -11.2, -5.6).example()).toContain('<Age {float -11.2~-5.6}>')
+test('example float int', () => {
+    expect(prefix('!cmd').float('Age', 1, 11).example()).toContain('6')
 })
 
 // Mention

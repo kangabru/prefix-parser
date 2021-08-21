@@ -46,6 +46,12 @@ class NumberArg<T = number> extends BaseArg<T> {
                     : ''
         return `<${this.name} {${type}${extra}}>`
     }
+
+    example() {
+        const min = this.min ?? 0
+        const max = this.max ?? 100
+        return Math.floor((min + max) / 2).toString()
+    }
 }
 
 export type IntegerArgs = MinMaxArgs
@@ -63,5 +69,11 @@ export type FloatArgs = MinMaxArgs
 export class FloatArg extends NumberArg {
     constructor(...[name, min, max]: FloatArgs) {
         super(name, min, max, true)
+    }
+
+    example() {
+        const min = this.min ?? 0.0
+        const max = this.max ?? 100.0
+        return ((min + max) / 2).toFixed(2)
     }
 }
