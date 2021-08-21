@@ -1,4 +1,5 @@
-import { ArgParseResponse, RegexArg } from "./base"
+import { ArgParseResponse } from "./base"
+import { RegexArg } from "./regex"
 
 /**
  * Matches a Discord user mention like <@!12345> or <@12345>.

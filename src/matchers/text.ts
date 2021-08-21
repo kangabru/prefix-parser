@@ -1,6 +1,7 @@
 import { NameArg, NameArgAnd } from "../types"
 import { assertGreaterThan, intArg, loremIpsum } from "../utils"
-import BaseArg, { ArgParseResponse, RegexArg, ValidateIndexArgs } from "./base"
+import BaseArg, { ArgParseResponse, ValidateIndexArgs } from "./base"
+import { RegexArg } from "./regex"
 
 export type TextArgs = NameArg
 export type WordArgs = NameArg
