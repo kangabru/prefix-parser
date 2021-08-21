@@ -22,6 +22,12 @@ test('help rest', () => {
     expect(prefix('!cmd').rest('Name').help()).toContain('<Name {remaining}>')
 })
 
+// Regex
+
+test('help regex', () => {
+    expect(prefix('!cmd').regex('Name', /[a-z]{3}/).help()).toContain('<Name {text}>')
+})
+
 // Int
 
 test('help int', () => {
@@ -92,4 +98,28 @@ test('help float min/max neg', () => {
 
 test('help float min/max neg alt', () => {
     expect(prefix('!cmd').float('Age', -11.2, -5.6).help()).toContain('<Age {float -11.2~-5.6}>')
+})
+
+// Mention
+
+test('help mention user', () => {
+    expect(prefix('!cmd').user('Name').help()).toContain('<Name {@user}>')
+})
+
+test('help mention role', () => {
+    expect(prefix('!cmd').role('Name').help()).toContain('<Name {@role}>')
+})
+
+test('help mention channel', () => {
+    expect(prefix('!cmd').channel('Name').help()).toContain('<Name {#channel}>')
+})
+
+// Flag
+
+test('help flag long/short', () => {
+    expect(prefix('!cmd').flagTrue('Yes', '--yes', '-y').help()).toContain('<Yes {--yes/-y}>')
+})
+
+test('help flag long', () => {
+    expect(prefix('!cmd').flagTrue('Yes', '--yes').help()).toContain('<Yes {--yes}>')
 })

@@ -19,17 +19,17 @@ export default class BaseArg<T> {
 
     /** Parses as string for the next argument and returns the parsed value and remaining text. */
     parse(_: string): ArgParseResponse<T> {
-        throw Error("Arg 'parse()' function not implemented")
+        throw Error(`${this.name} 'parse()' function not implemented`)
     }
 
     /** Returns the help syntax seen by end users via the help flag and in errors. */
     help(): string {
-        throw Error("Arg 'help()' function not implemented")
+        throw Error(`${this.name} 'help()' function not implemented`)
     }
 
     /** Returns an example of this argument as seen by end users via the help flag. */
     example(): string {
-        throw Error("Arg 'example()' function not implemented")
+        throw Error(`${this.name} 'example()' function not implemented`)
     }
 
     validateArg() {
@@ -69,5 +69,9 @@ export class RegexArg<T = string> extends BaseArg<T> {
         const groupMatch = matches[this.group].trim() as any
         const rest = text.replace(allMatch, '').trim()
         return [groupMatch, rest]
+    }
+
+    help(): string {
+        return `<${this.name} {text}>`
     }
 }

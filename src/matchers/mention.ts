@@ -16,6 +16,10 @@ export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
             throw Error("User mention not found")
         }
     }
+
+    help() {
+        return `<${this.name} {@user}>`
+    }
 }
 
 /**
@@ -34,6 +38,10 @@ export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
             throw Error("Role mention not found")
         }
     }
+
+    help() {
+        return `<${this.name} {@role}>`
+    }
 }
 
 /**
@@ -51,5 +59,9 @@ export class DiscordChannelMentionArg<T = string> extends RegexArg<T> {
         } catch (error) {
             throw Error("Channel mention not found")
         }
+    }
+
+    help() {
+        return `<${this.name} {#channel}>`
     }
 }

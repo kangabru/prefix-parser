@@ -44,6 +44,11 @@ export class FlagTrueArg<T = boolean> extends BaseArg<T> {
 
         return [false as any, text]
     }
+
+    help() {
+        const command = [this.long, this.short].filter(x => !!x).join('/')
+        return `<${this.name} {${command}}>`
+    }
 }
 
 /** Returns 'false' if it matches a flag anywhere in the text like '--help' or '-h' (long and short version respectively). */
