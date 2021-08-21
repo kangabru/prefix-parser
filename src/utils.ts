@@ -29,3 +29,8 @@ export function isPopulated<T>(val: T): T extends true ? true : false {
 export function isNum(val: any) {
     return typeof val === 'number' && isPopulated(val)
 }
+
+export function loremIpsum(wordCount: number) {
+    const words = 'lorem ipsum dolor sit amet'.split(' ')
+    return [...new Array(wordCount)].map((_, i) => words[i % words.length]).join(' ')
+}

@@ -1,5 +1,5 @@
 import { NameArg, NameArgAnd } from "../types"
-import { assertGreaterThan, intArg } from "../utils"
+import { assertGreaterThan, intArg, loremIpsum } from "../utils"
 import BaseArg, { ArgParseResponse, RegexArg, ValidateIndexArgs } from "./base"
 
 export type TextArgs = NameArg
@@ -15,7 +15,7 @@ export type WordsArgs = NameArgAnd<[words?: number]>
  */
 export class TextArg<T = string> extends RegexArg<T> {
     constructor(...[name]: TextArgs) {
-        super(name, /[a-zA-Z_-\s]+/)
+        super(name, loremIpsum(2), /[a-zA-Z_-\s]+/)
     }
 
     help() {
@@ -44,6 +44,10 @@ export class RestArg<T = string> extends BaseArg<T> {
     help() {
         return `<${this.name} {remaining}>`
     }
+
+    example() {
+        return loremIpsum(2)
+    }
 }
 
 /**
@@ -62,7 +66,7 @@ export class WordsArg<T = string> extends RegexArg<T> {
         const _words = intArg(words)
         const regex = [...new Array(_words)].map(_ => '\\w+').join('\\s+') // regex words separated by spaces e.g. /\w+\s+\w+/
 
-        super(name, new RegExp(regex))
+        super(name, loremIpsum(words), new RegExp(regex))
         this.words = _words
 
         assertGreaterThan(_words, 0)
@@ -80,5 +84,9 @@ export class WordsArg<T = string> extends RegexArg<T> {
     help() {
         const s = this.words === 1 ? '' : 's'
         return `<${this.name} {${this.words} word${s}}>`
+    }
+
+    example() {
+        return loremIpsum(this.words)
     }
 }

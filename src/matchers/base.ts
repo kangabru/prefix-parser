@@ -34,16 +34,21 @@ export default class BaseArg<T> {
 
     validateArg() {
         assert(this.help().length > 0, 'Help message should be populated')
+        assert(this.example().length > 0, 'Example message should be populated')
+        const [value, error] = this.parse(this.example())
+        assert(!error, 'Parsing the example should not return errors')
+        assert(!!value, 'Parsing the example should return a value')
     }
 
     /** (Optional) Validate the position of the arg. This should throw an error upon failure. */
     validateIndex(..._: ValidateIndexArgs): void { }
 }
 
-export type RegexArgs = NameArgAnd<[regex: RegExp, group?: number]>
+export type RegexArgs = NameArgAnd<[example: string, regex: RegExp, group?: number]>
 
 /** A generic regex parser which can match regex and extract a single regex group. */
 export class RegexArg<T = string> extends BaseArg<T> {
+    private _example: string
     private regex: RegExp
     private group: number
 
@@ -52,9 +57,10 @@ export class RegexArg<T = string> extends BaseArg<T> {
      * @param regex - The regex to match with. Everything matched by this expression will be discarded and not accessible by remaining argument parsers.
      * @param group - The index of a regex group to return. The
      */
-    constructor(...[name, regex, group = 0]: RegexArgs) {
+    constructor(...[name, example, regex, group = 0]: RegexArgs) {
         super(name)
         this.regex = regex
+        this._example = example
         this.group = intArg(group)
 
         assertPositive(group)
@@ -73,5 +79,10 @@ export class RegexArg<T = string> extends BaseArg<T> {
 
     help(): string {
         return `<${this.name} {text}>`
+    }
+
+    /** Returns an example of this argument as seen by end users via the help flag. */
+    example(): string {
+        return this._example
     }
 }

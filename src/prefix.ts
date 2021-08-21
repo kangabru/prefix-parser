@@ -84,6 +84,11 @@ export class DiscordPrefixParser {
         return [this.prefix, argsHelp].join(' ')
     }
 
+    example(): string {
+        const argsHelp = this.args.map(a => a.example()).join(' ')
+        return [this.prefix, argsHelp].join(' ')
+    }
+
     toString() {
         return [this.title(), this.help()].join('\n')
     }

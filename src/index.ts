@@ -57,6 +57,10 @@ export class DiscordPrefixParserFluentInterface {
         return this.parser.help()
     }
 
+    example() {
+        return this.parser.example()
+    }
+
     int(...args: IntegerArgs) {
         this.parser.add(new IntegerArg(...args))
         return this
