@@ -37,13 +37,13 @@ test('matches role no mention', () => {
 // ** Channel **
 
 test('matches channel mention', () => {
-    const [args, error] = prefix('!cmd').channel('channel').parse('!cmd <@#12345>')
+    const [args, error] = prefix('!cmd').channel('channel').parse('!cmd <#12345>')
     expect(error).toBe(null)
     expect(args).toEqual(['12345'])
 })
 
 test('matches role no mention', () => {
-    const [args, error] = prefix('!cmd').channel('channek').parse('!cmd <@#hey>')
+    const [args, error] = prefix('!cmd').channel('channek').parse('!cmd <#hey>')
     expect(error).toContain('Channel mention not found')
     expect(args).toEqual(null)
 })

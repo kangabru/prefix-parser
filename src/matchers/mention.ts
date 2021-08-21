@@ -6,7 +6,7 @@ import { ArgParseResponse, RegexArg } from "./base"
  */
 export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
     constructor(name: string) {
-        super(name, /^\<\@\!?(\d+)\>/, 1)
+        super(name, '<@12345>', /^\<\@\!?(\d+)\>/, 1)
     }
 
     parse(text: string): ArgParseResponse<T> {
@@ -28,7 +28,7 @@ export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
  */
 export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
     constructor(name: string) {
-        super(name, /^\<\@\&(\d+)\>/, 1)
+        super(name, '<@&12345>', /^\<\@\&(\d+)\>/, 1)
     }
 
     parse(text: string): ArgParseResponse<T> {
@@ -45,12 +45,12 @@ export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
 }
 
 /**
- * Matches a Discord channel mention like <@#12345>.
+ * Matches a Discord channel mention like <#12345>.
  * @see https://discordjs.guide/miscellaneous/parsing-mention-arguments.html#how-discord-mentions-work
  */
 export class DiscordChannelMentionArg<T = string> extends RegexArg<T> {
     constructor(name: string) {
-        super(name, /^\<\@\#(\d+)\>/, 1)
+        super(name, '<#12345>', /^\<\#(\d+)\>/, 1)
     }
 
     parse(text: string): ArgParseResponse<T> {

@@ -57,7 +57,7 @@ test('prefix - many commands flag true', () => {
         .user("User")
         .role("Fav Role")
         .channel("Fav Channel")
-        .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <@#13579> -m")
+        .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <#13579> -m")
 
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8, true, '12345', '24680', '13579'])
@@ -72,7 +72,7 @@ test('prefix - many commands flag false', () => {
         .user("User")
         .role("Role")
         .channel("Channel")
-        .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <@#13579> Extra")
+        .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <#13579> Extra")
 
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8, false, '12345', '24680', '13579'])

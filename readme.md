@@ -254,7 +254,7 @@ const cmd = prefix('!cmd')
     .channel('Channel')
 
 // User types: !cmd @kangabru @admin #general
-cmd.parse('!cmd <@12345> <@&67890> <@#24680>') // >> ['12345', '67890', '24680']
+cmd.parse('!cmd <@12345> <@&67890> <#24680>') // >> ['12345', '67890', '24680']
 ```
 
 ### Flags
