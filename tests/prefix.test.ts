@@ -1,6 +1,6 @@
 import prefix from '../src/index';
 import { FloatArg, IntegerArg } from '../src/matchers/number';
-import { RestArg } from '../src/matchers/text';
+import { RestArg, TextArg } from '../src/matchers/text';
 import { DiscordPrefixParser } from '../src/prefix';
 
 test('matches command', () => {
@@ -16,36 +16,45 @@ test('ignores command', () => {
 })
 
 test('prefix - parse via fluent interface', () => {
-    const [args, error] = prefix('!cmd')
-        .int("Age")
-        .float("Height")
+    const cmd = prefix('!cmd')
         .text("Name")
-        .parse("!cmd 20 1.8 Jim Bob")
+        .int("Age", 18)
+        .float("Height", 0, 3)
 
+    expect(cmd.help()).toBe('!cmd <Name {text}> <Age {int >18}> <Height {float 0~3}>')
+    expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
+
+    const [args, error] = cmd.parse("!cmd Jim Bob 20 1.8")
     expect(error).toBe(null)
-    expect(args).toEqual([20, 1.8, 'Jim Bob'])
+    expect(args).toEqual(['Jim Bob', 20, 1.8])
 })
 
 test('prefix - parse via args array', () => {
-    const [args, error] = prefix('!cmd')
-        .add(
-            new IntegerArg("Age"),
-            new FloatArg("Height"),
-            new RestArg("Name"),
-        )
-        .parse("!cmd 20 1.8 Jim Bob")
+    const cmd = prefix('!cmd').add<any>(
+        new TextArg("Name"),
+        new IntegerArg("Age", 18),
+        new FloatArg("Height", 0, 3),
+    )
 
+    expect(cmd.help()).toBe('!cmd <Name {text}> <Age {int >18}> <Height {float 0~3}>')
+    expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
+
+    const [args, error] = cmd.parse("!cmd Jim Bob 20 1.8")
     expect(error).toBe(null)
-    expect(args).toEqual([20, 1.8, 'Jim Bob'])
+    expect(args).toEqual(['Jim Bob', 20, 1.8])
 })
 
 test('prefix - parse via classes', () => {
-    const builder = new DiscordPrefixParser('!cmd')
-    builder.add(new IntegerArg("Age"))
-    builder.add(new FloatArg("Height"))
-    builder.add(new RestArg("Name"))
-    const args = builder.parse("!cmd 20 1.8 Jim Bob")
-    expect(args).toEqual([20, 1.8, 'Jim Bob'])
+    const cmd = new DiscordPrefixParser('!cmd')
+    cmd.add(new TextArg("Name"))
+    cmd.add(new IntegerArg("Age", 18))
+    cmd.add(new FloatArg("Height", 0, 3))
+
+    expect(cmd.help()).toBe('!cmd <Name {text}> <Age {int >18}> <Height {float 0~3}>')
+    expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
+
+    const args = cmd.parse("!cmd Jim Bob 20 1.8")
+    expect(args).toEqual(['Jim Bob', 20, 1.8])
 })
 
 test('prefix - many commands flag true', () => {
