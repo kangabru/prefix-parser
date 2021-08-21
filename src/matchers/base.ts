@@ -1,5 +1,5 @@
 import { NameArg, NameArgAnd } from "../types";
-import { assert, assertPositive, intArg, isPopulated, isVoid } from "../utils";
+import { assert, assertPositive, intArg, isPopulated } from "../utils";
 
 export type ArgParseResponse<T> = [T, string]
 export type BaseArgs = NameArg
