@@ -25,7 +25,7 @@
     "/dist"
   ],
   "scripts": {
-    "test": "tsc && jest",
+    "test": "tsc --noEmit && jest",
     "build": "tsc"
   },
   "devDependencies": {
