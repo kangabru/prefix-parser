@@ -3,7 +3,6 @@ import BaseArg from "./matchers/base";
 export type Arr = readonly any[]
 
 export type NameArg = [name: string]
-export type NameArgAnd<Args extends Arr> = [...NameArg, ...Args]
 
 /**
  * Maps a typed tuple like '[string, number, boolean]' to '[BaseArg<string>, BaseArg<number>, BaseArg<boolean>]'

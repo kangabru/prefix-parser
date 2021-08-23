@@ -1,22 +1,27 @@
+import { NameArg } from "../types";
 import { assert } from "../utils";
 import BaseArg, { ArgParseResponse } from "./base";
 
 export type FlagArg = FlagTrueArg<true | false>
-export type FlagArgs = [name: string, longCommand: string, shortCommand?: string]
+
+type FlagOpts = { short?: string }
+export type FlagArgs = [...args: NameArg, long: string, opts?: FlagOpts]
 
 /** Returns 'true' if it matches a flag anywhere in the text like '--help' or '-h' (long and short version respectively). */
 export class FlagTrueArg<T = boolean> extends BaseArg<T> {
     isFlag = true
     long: string; short?: string;
 
-    constructor(...[name, longCommand, shortCommand]: FlagArgs) {
+    constructor(...[name, longCommand, opts = {}]: FlagArgs) {
         super(name)
+
+        const { short: shortCommand } = opts
         this.long = longCommand
         this.short = shortCommand
 
         // Assert long command is in the form of "--command"
-        const long = longCommand.toLowerCase().match(/^--[a-z]{3,}$/)
-        assert(!!(long && long.length && long[0] === longCommand), `Long command '${longCommand}' must be in the form --command and have 3+ characters`)
+        const long = longCommand.toLowerCase().match(/^--[a-z]{2,}$/)
+        assert(!!(long && long.length && long[0] === longCommand), `Long command '${longCommand}' must be in the form --command and have 2+ characters`)
 
         // Assert short command is in the form of "-cmd" (up to 3 letters)
         if (shortCommand) {
@@ -68,6 +73,6 @@ export class FlagFalseArg<T = boolean> extends FlagTrueArg<T> {
 /** Returns 'true' if it matches the help flag anywhere in the text ('--help' or '-h'). */
 export class HelpFlagArg extends FlagTrueArg {
     constructor() {
-        super("Help", "--help", "-h")
+        super("Help", "--help", { short: "-h" })
     }
 }

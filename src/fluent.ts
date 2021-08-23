@@ -1,6 +1,5 @@
-import { BaseArgs } from "./matchers/base";
 import { FlagArgs, FlagFalseArg, FlagTrueArg } from "./matchers/flag";
-import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg } from "./matchers/mention";
+import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg, MentionArgs } from "./matchers/mention";
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
 import { RegexArg, RegexArgs } from "./matchers/regex";
 import { RestArg, TextArg, TextArgs, WordArgs, WordsArg, WordsArgs } from "./matchers/text";
@@ -92,17 +91,17 @@ export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
         return this as any
     }
 
-    user(...args: BaseArgs): Extend<Args, string> {
+    user(...args: MentionArgs): Extend<Args, string> {
         this.parser.add(new DiscordUserMentionArg(...args))
         return this as any
     }
 
-    role(...args: BaseArgs): Extend<Args, string> {
+    role(...args: MentionArgs): Extend<Args, string> {
         this.parser.add(new DiscordRoleMentionArg(...args))
         return this as any
     }
 
-    channel(...args: BaseArgs): Extend<Args, string> {
+    channel(...args: MentionArgs): Extend<Args, string> {
         this.parser.add(new DiscordChannelMentionArg(...args))
         return this as any
     }

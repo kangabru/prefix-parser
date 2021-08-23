@@ -37,19 +37,19 @@ test('matches int - text', () => {
 })
 
 test('matches int - pass min/max', () => {
-    const [args, error] = prefix('!cmd').int('age', 20, 30).parse('!cmd 25')
+    const [args, error] = prefix('!cmd').int('age', { min: 20, max: 30 }).parse('!cmd 25')
     expect(args).toEqual([25])
     expect(error).toBe(null)
 })
 
 test('matches int - fail min', () => {
-    const [args, error] = prefix('!cmd').int('age', 30).parse('!cmd 25')
+    const [args, error] = prefix('!cmd').int('age', { min: 30 }).parse('!cmd 25')
     expect(args).toEqual(null)
     expect(error).toContain("'25' cannot be less than '30'")
 })
 
 test('matches int - fail max', () => {
-    const [args, error] = prefix('!cmd').int('age', null, 20).parse('!cmd 25')
+    const [args, error] = prefix('!cmd').int('age', { max: 20 }).parse('!cmd 25')
     expect(args).toEqual(null)
     expect(error).toContain("'25' cannot be more than '20'")
 })
@@ -62,18 +62,18 @@ test('matches int - fail float', () => {
 
 test('arg int min', () => {
     expect(() => {
-        prefix('!cmd').int('Age', '5' as any)
+        prefix('!cmd').int('Age', { min: '5' as any })
     }).toThrow("'5' must be a number")
 })
 
 test('arg int max', () => {
     expect(() => {
-        prefix('!cmd').int('Age', null, '5' as any)
+        prefix('!cmd').int('Age', { max: '5' as any })
     }).toThrow("'5' must be a number")
 })
 
 test('arg int min/max', () => {
     expect(() => {
-        prefix('!cmd').int('Age', 10, 5)
+        prefix('!cmd').int('Age', { min: 10, max: 5 })
     }).toThrow("Min value '10' must be less than '5'")
 })

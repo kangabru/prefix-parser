@@ -1,11 +1,13 @@
-import { NameArg, NameArgAnd } from "../types"
+import { NameArg } from "../types"
 import { assertGreaterThan, intArg, loremIpsum } from "../utils"
 import BaseArg, { ArgParseResponse, ValidateIndexArgs } from "./base"
 import { RegexArg } from "./regex"
 
 export type TextArgs = NameArg
 export type WordArgs = NameArg
-export type WordsArgs = NameArgAnd<[words?: number]>
+
+type WordsOpts = { words?: number }
+export type WordsArgs = [...args: NameArg, opts?: WordsOpts]
 
 /**
  * Matches as much text as possible including characters a-z, spaces, - and _.
@@ -16,7 +18,7 @@ export type WordsArgs = NameArgAnd<[words?: number]>
  */
 export class TextArg<T = string> extends RegexArg<T> {
     constructor(...[name]: TextArgs) {
-        super(name, loremIpsum(2), /[a-zA-Z_-\s]+/)
+        super(name, /[a-zA-Z_-\s]+/, loremIpsum(2))
     }
 
     help() {
@@ -63,11 +65,12 @@ export class RestArg<T = string> extends BaseArg<T> {
  */
 export class WordsArg<T = string> extends RegexArg<T> {
     private words: number
-    constructor(...[name, words = 1]: WordsArgs) {
+    constructor(...[name, opts = {}]: WordsArgs) {
+        const { words = 1 } = opts
         const _words = intArg(words)
         const regex = [...new Array(_words)].map(_ => '\\w+').join('\\s+') // regex words separated by spaces e.g. /\w+\s+\w+/
 
-        super(name, loremIpsum(words), new RegExp(regex))
+        super(name, new RegExp(regex), loremIpsum(words))
         this.words = _words
 
         assertGreaterThan(_words, 0)

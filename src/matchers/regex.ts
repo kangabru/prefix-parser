@@ -1,8 +1,9 @@
-import { NameArgAnd } from "../types";
+import { NameArg } from "../types";
 import { assertPositive, intArg } from "../utils";
 import BaseArg, { ArgParseResponse } from "./base";
 
-export type RegexArgs = NameArgAnd<[example: string, regex: RegExp, group?: number]>
+type RegexOpts = { group?: number }
+export type RegexArgs = [...args: NameArg, regex: RegExp, example: string, opts?: RegexOpts]
 
 /** A generic regex parser which can match regex and extract a single regex group. */
 export class RegexArg<T = string> extends BaseArg<T> {
@@ -15,13 +16,15 @@ export class RegexArg<T = string> extends BaseArg<T> {
      * @param regex - The regex to match with. Everything matched by this expression will be discarded and not accessible by remaining argument parsers.
      * @param group - The index of a regex group to return. The
      */
-    constructor(...[name, example, regex, group = 0]: RegexArgs) {
+    constructor(...[name, regex, example, opts = {}]: RegexArgs) {
         super(name)
+
+        const { group = 0 } = opts
+        assertPositive(group)
+
         this.regex = regex
         this._example = example
         this.group = intArg(group)
-
-        assertPositive(group)
     }
 
     parse(text: string): ArgParseResponse<T> {
