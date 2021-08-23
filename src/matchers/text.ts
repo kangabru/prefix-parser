@@ -5,7 +5,9 @@ import { RegexArg } from "./regex"
 
 export type TextArgs = NameArg
 export type WordArgs = NameArg
-export type WordsArgs = [...args: NameArg, words?: number]
+
+type WordsOpts = { words?: number }
+export type WordsArgs = [...args: NameArg, opts?: WordsOpts]
 
 /**
  * Matches as much text as possible including characters a-z, spaces, - and _.
@@ -63,7 +65,8 @@ export class RestArg<T = string> extends BaseArg<T> {
  */
 export class WordsArg<T = string> extends RegexArg<T> {
     private words: number
-    constructor(...[name, words = 1]: WordsArgs) {
+    constructor(...[name, opts = {}]: WordsArgs) {
+        const { words = 1 } = opts
         const _words = intArg(words)
         const regex = [...new Array(_words)].map(_ => '\\w+').join('\\s+') // regex words separated by spaces e.g. /\w+\s+\w+/
 

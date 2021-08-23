@@ -14,7 +14,7 @@ test('matches text', () => {
 
 test('match 0 words', () => {
     expect(() => {
-        prefix('!cmd').words('name', 0).parse('!cmd Jimmy is the best')
+        prefix('!cmd').words('name', { words: 0 }).parse('!cmd Jimmy is the best')
     }).toThrow("Argument with value '0' must be greater than '0'");
 })
 
@@ -25,7 +25,7 @@ test('match 1 word', () => {
 })
 
 test('match 2 words', () => {
-    const [args, error] = prefix('!cmd').words('name', 2).parse('!cmd Jimmy is the best')
+    const [args, error] = prefix('!cmd').words('name', { words: 2 }).parse('!cmd Jimmy is the best')
     expect(error).toBe(null)
     expect(args).toEqual(['Jimmy is'])
 })

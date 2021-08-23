@@ -7,11 +7,11 @@ test('example 1 word', () => {
 })
 
 test('example 2 words', () => {
-    expect(prefix('!cmd').words('Name', 2).example()).toContain('lorem ipsum')
+    expect(prefix('!cmd').words('Name', { words: 2 }).example()).toContain('lorem ipsum')
 })
 
 test('example 3 words', () => {
-    expect(prefix('!cmd').words('Name', 3).example()).toContain('lorem ipsum dolor')
+    expect(prefix('!cmd').words('Name', { words: 3 }).example()).toContain('lorem ipsum dolor')
 })
 
 test('example text', () => {
