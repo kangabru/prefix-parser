@@ -117,9 +117,9 @@ test('help mention channel', () => {
 // Flag
 
 test('help flag long/short', () => {
-    expect(prefix('!cmd').flagTrue('Yes', '--yes', { short: '-y' }).help()).toContain('<Yes {--yes/-y}>')
+    expect(prefix('!cmd').flag('Yes', '--yes', { short: '-y' }).help()).toContain('<Yes {--yes/-y}>')
 })
 
 test('help flag long', () => {
-    expect(prefix('!cmd').flagTrue('Yes', '--yes').help()).toContain('<Yes {--yes}>')
+    expect(prefix('!cmd').flag('Yes', '--yes').help()).toContain('<Yes {--yes}>')
 })

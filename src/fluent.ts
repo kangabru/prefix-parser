@@ -1,4 +1,4 @@
-import { FlagArgs, FlagFalseArg, FlagTrueArg } from "./matchers/flag";
+import { FlagArg, FlagArgs } from "./matchers/flag";
 import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg, MentionArgs } from "./matchers/mention";
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
 import { RegexArg, RegexArgs } from "./matchers/regex";
@@ -106,13 +106,8 @@ export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
         return this as any
     }
 
-    flagTrue(...args: FlagArgs): Extend<Args, boolean> {
-        this.parser.add(new FlagTrueArg(...args))
-        return this as any
-    }
-
-    flagFalse(...args: FlagArgs): Extend<Args, boolean> {
-        this.parser.add(new FlagFalseArg(...args))
+    flag(...args: FlagArgs): Extend<Args, boolean> {
+        this.parser.add(new FlagArg(...args))
         return this as any
     }
 }
