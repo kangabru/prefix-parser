@@ -20,8 +20,8 @@ export class FlagTrueArg<T = boolean> extends BaseArg<T> {
         this.short = shortCommand
 
         // Assert long command is in the form of "--command"
-        const long = longCommand.toLowerCase().match(/^--[a-z]{3,}$/)
-        assert(!!(long && long.length && long[0] === longCommand), `Long command '${longCommand}' must be in the form --command and have 3+ characters`)
+        const long = longCommand.toLowerCase().match(/^--[a-z]{2,}$/)
+        assert(!!(long && long.length && long[0] === longCommand), `Long command '${longCommand}' must be in the form --command and have 2+ characters`)
 
         // Assert short command is in the form of "-cmd" (up to 3 letters)
         if (shortCommand) {

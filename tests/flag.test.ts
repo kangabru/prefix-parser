@@ -63,15 +63,13 @@ test('long argument check 4', () => {
 })
 
 test('long argument check 5', () => {
-    expect(() => {
-        prefix('!cmd').flagFalse('Age', '--ae')
-    }).toThrow("Long command '--ae' must be in the form --command and have 3+ characters");
+    prefix('!cmd').flagFalse('Age', '--ae') // No error
 })
 
 test('long argument check 6 - caps', () => {
     expect(() => {
         prefix('!cmd').flagFalse('Age', '--AGE')
-    }).toThrow("Long command '--AGE' must be in the form --command and have 3+ characters");
+    }).toThrow("Long command '--AGE' must be in the form --command and have 2+ characters");
 })
 
 // ** Short arg check **
@@ -83,15 +81,15 @@ test('short argument check 1', () => {
 })
 
 test('short argument check 2', () => {
-    prefix('!cmd').flagFalse('Age', '--age', { short: '-a' })
+    prefix('!cmd').flagFalse('Age', '--age', { short: '-a' }) // No error
 })
 
 test('short argument check 3', () => {
-    prefix('!cmd').flagFalse('Age', '--age', { short: '-ab' })
+    prefix('!cmd').flagFalse('Age', '--age', { short: '-ab' }) // No error
 })
 
 test('short argument check 4', () => {
-    prefix('!cmd').flagFalse('Age', '--age', { short: '-abc' })
+    prefix('!cmd').flagFalse('Age', '--age', { short: '-abc' }) // No error
 })
 
 test('short argument check 5', () => {
