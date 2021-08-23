@@ -3,7 +3,7 @@ import { assert, isNum, isPopulated, isVoid } from "../utils";
 import BaseArg, { ArgParseResponse } from "./base";
 
 type NumberOpts = { min?: number, max?: number, float?: boolean }
-type NumberArgs = [...NameArg, NumberOpts]
+type NumberArgs = [...args: NameArg, opts?: NumberOpts]
 
 type MinMaxArgs = [...args: NameArg, opts?: { min?: number, max?: number }]
 export type IntegerArgs = MinMaxArgs
@@ -13,16 +13,18 @@ export type FloatArgs = MinMaxArgs
 class NumberArg<T = number> extends BaseArg<T> {
     min?: number; max?: number; float: boolean;
 
-    constructor(...[name, { min, max, float }]: NumberArgs) {
+    constructor(...[name, opts = {}]: NumberArgs) {
         super(name)
-        this.float = float ?? false
-        this.min = (float || isVoid(min)) ? min : Math.floor(min!)
-        this.max = (float || isVoid(max)) ? max : Math.floor(max!)
 
+        const { min, max, float = false } = opts
         if (isPopulated(min)) assert(isNum(min), `Value '${min}' must be a number`)
         if (isPopulated(max)) assert(isNum(max), `Value '${max}' must be a number`)
         if (isPopulated(min) && isPopulated(max))
             assert(min! < max!, `Min value '${min}' must be less than '${max}'`)
+
+        this.float = float
+        this.min = (float || isVoid(min)) ? min : Math.floor(min!)
+        this.max = (float || isVoid(max)) ? max : Math.floor(max!)
     }
 
     parse(text: string): ArgParseResponse<T> {

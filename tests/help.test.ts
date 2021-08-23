@@ -25,7 +25,7 @@ test('help rest', () => {
 // Regex
 
 test('help regex', () => {
-    expect(prefix('!cmd').regex('Name', 'abc', /[a-z]{3}/).help()).toContain('<Name {text}>')
+    expect(prefix('!cmd').regex('Name', /[a-z]{3}/, 'abc').help()).toContain('<Name {text}>')
 })
 
 // Int

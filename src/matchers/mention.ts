@@ -7,7 +7,7 @@ import { RegexArg } from "./regex"
  */
 export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
     constructor(name: string) {
-        super(name, '<@12345>', /^\<\@\!?(\d+)\>/, 1)
+        super(name, /^\<\@\!?(\d+)\>/, '<@12345>', { group: 1 })
     }
 
     parse(text: string): ArgParseResponse<T> {
@@ -29,7 +29,7 @@ export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
  */
 export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
     constructor(name: string) {
-        super(name, '<@&12345>', /^\<\@\&(\d+)\>/, 1)
+        super(name, /^\<\@\&(\d+)\>/, '<@&12345>', { group: 1 })
     }
 
     parse(text: string): ArgParseResponse<T> {
@@ -51,7 +51,7 @@ export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
  */
 export class DiscordChannelMentionArg<T = string> extends RegexArg<T> {
     constructor(name: string) {
-        super(name, '<#12345>', /^\<\#(\d+)\>/, 1)
+        super(name, /^\<\#(\d+)\>/, '<#12345>', { group: 1 })
     }
 
     parse(text: string): ArgParseResponse<T> {

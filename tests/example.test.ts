@@ -25,11 +25,11 @@ test('example rest', () => {
 // Regex
 
 test('example regex', () => {
-    expect(prefix('!cmd').regex('Name', 'abc', /[a-z]{3}/).example()).toContain('abc')
+    expect(prefix('!cmd').regex('Name', /[a-z]{3}/, 'abc').example()).toContain('abc')
 })
 
 test('example regex', () => {
-    expect(prefix('!cmd').regex('Name', 'test@example.com', /[a-z]+@[a-z]+\.com/).example()).toContain('test@example.com')
+    expect(prefix('!cmd').regex('Name', /[a-z]+@[a-z]+\.com/, 'test@example.com').example()).toContain('test@example.com')
 })
 
 // Int
