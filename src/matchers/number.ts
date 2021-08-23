@@ -1,16 +1,21 @@
+import { NameArg } from "../types";
 import { assert, isNum, isPopulated, isVoid } from "../utils";
 import BaseArg, { ArgParseResponse } from "./base";
 
-type MinMaxArgs = [name: string, min?: number, max?: number]
-type NumberArgs = [name: string, min?: number, max?: number, float?: boolean]
+type NumberOpts = { min?: number, max?: number, float?: boolean }
+type NumberArgs = [...NameArg, NumberOpts]
+
+type MinMaxArgs = [...args: NameArg, opts?: { min?: number, max?: number }]
+export type IntegerArgs = MinMaxArgs
+export type FloatArgs = MinMaxArgs
 
 /** Matches the next valid number using 'parseInt' and 'parseFloat' for the respective type. */
 class NumberArg<T = number> extends BaseArg<T> {
     min?: number; max?: number; float: boolean;
 
-    constructor(...[name, min, max, float = false]: NumberArgs) {
+    constructor(...[name, { min, max, float }]: NumberArgs) {
         super(name)
-        this.float = float
+        this.float = float ?? false
         this.min = (float || isVoid(min)) ? min : Math.floor(min!)
         this.max = (float || isVoid(max)) ? max : Math.floor(max!)
 
@@ -54,21 +59,18 @@ class NumberArg<T = number> extends BaseArg<T> {
     }
 }
 
-export type IntegerArgs = MinMaxArgs
-
 /** Matches an integer. Numbers like '12.34' will be converted to an int like '12'. */
 export class IntegerArg extends NumberArg {
-    constructor(...[name, min, max]: IntegerArgs) {
-        super(name, min, max)
+    constructor(...[name, opts]: IntegerArgs) {
+        super(name, { ...opts, float: false })
     }
 }
 
-export type FloatArgs = MinMaxArgs
 
 /** Matches a float. */
 export class FloatArg extends NumberArg {
-    constructor(...[name, min, max]: FloatArgs) {
-        super(name, min, max, true)
+    constructor(...[name, opts]: FloatArgs) {
+        super(name, { ...opts, float: true })
     }
 
     example() {

@@ -20,8 +20,8 @@ test('ignores command', () => {
 test('prefix - parse via fluent interface', () => {
     const cmd = prefix('!cmd')
         .text("Name")
-        .int("Age", 18)
-        .float("Height", 0, 3)
+        .int("Age", { min: 18 })
+        .float("Height", { min: 0, max: 3 })
 
     expect(cmd.help()).toBe('!cmd <Name {text}> <Age {int >18}> <Height {float 0~3}>')
     expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
@@ -35,8 +35,8 @@ test('prefix - parse via fluent interface', () => {
 test('prefix - parse via args array', () => {
     const cmd = prefix('!cmd').add(
         new TextArg("Name"),
-        new IntegerArg("Age", 18),
-        new FloatArg("Height", 0, 3),
+        new IntegerArg("Age", { min: 18 }),
+        new FloatArg("Height", { min: 0, max: 3 }),
     )
 
     expect(cmd.help()).toBe('!cmd <Name {text}> <Age {int >18}> <Height {float 0~3}>')
@@ -53,8 +53,8 @@ test('prefix - parse via classes', () => {
     const cmd = new DiscordPrefixParser<Args>('!cmd')
 
     cmd.add(new TextArg("Name"))
-    cmd.add(new IntegerArg("Age", 18))
-    cmd.add(new FloatArg("Height", 0, 3))
+    cmd.add(new IntegerArg("Age", { min: 18 }))
+    cmd.add(new FloatArg("Height", { min: 0, max: 3 }))
 
     expect(cmd.help()).toBe('!cmd <Name {text}> <Age {int >18}> <Height {float 0~3}>')
     expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
