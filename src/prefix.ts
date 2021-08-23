@@ -1,7 +1,10 @@
 import BaseArg, { Arg } from "./matchers/base";
 import { FlagArg, HelpFlagArg } from "./matchers/flag";
+import { Arr, MapToBaseArg } from "./types";
 
 export type PrefixParserArgs = [command: string, name?: string]
+
+type Extend<Args extends Arr, T extends Arr> = DiscordPrefixParser<[...Args, ...T]>
 
 /**
  * Parses Discord messages into Javascript values.
@@ -20,7 +23,7 @@ export type PrefixParserArgs = [command: string, name?: string]
  * const args = builder.parse("!cmd 20 1.8 Jim Bob")
  * console.log(args) // [20, 1.8, 'Jim Bob']
  */
-export class DiscordPrefixParser {
+export class DiscordPrefixParser<Args extends Arr = []> {
     private prefix: string;
     private name?: string;
     private args: BaseArg<any>[];
@@ -31,7 +34,7 @@ export class DiscordPrefixParser {
         this.args = []
     }
 
-    add<T>(...args: BaseArg<T>[]) {
+    add<NewArgs extends Arr>(...args: MapToBaseArg<NewArgs>): Extend<Args, NewArgs> {
         this.args.push(...args)
 
         // Validate arg definition
@@ -43,7 +46,7 @@ export class DiscordPrefixParser {
             arg?.validateIndex(i, this.args.length)
         }
 
-        return this;
+        return this as any;
     }
 
     /**
@@ -52,7 +55,7 @@ export class DiscordPrefixParser {
      * @returns 'null' if the command isn't the prefix command, or an array of parsed argument values of the same length and order of the added arguments.
      * @throws A string error that can be sent to end users to help them correct the command and try again.
      */
-    parse(text: string): any[] | null {
+    parse(text: string): Args | null {
         const help = new HelpFlagArg().parse(text)[0]
         if (help) throw Error(this.help())
 
@@ -72,7 +75,7 @@ export class DiscordPrefixParser {
             }
         }
 
-        return values
+        return values as any
     }
 
     title() {

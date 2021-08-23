@@ -1,10 +1,14 @@
-import BaseArg, { BaseArgs } from "./matchers/base";
+import { BaseArgs } from "./matchers/base";
 import { FlagArgs, FlagFalseArg, FlagTrueArg } from "./matchers/flag";
 import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg } from "./matchers/mention";
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
 import { RegexArg, RegexArgs } from "./matchers/regex";
 import { RestArg, TextArg, TextArgs, WordArgs, WordsArg, WordsArgs } from "./matchers/text";
 import { DiscordPrefixParser } from "./prefix";
+import { Arr, MapToBaseArg } from "./types";
+
+type Update<Args extends Arr> = DiscordPrefixParserFluentInterface<Args>
+type Extend<Args extends Arr, T> = Update<[...Args, T]>
 
 /**
  * Wraps the {@link DiscordPrefixParser} class to provide an easy to use fluent interface.
@@ -16,16 +20,16 @@ import { DiscordPrefixParser } from "./prefix";
  *     .parse("!cmd 20 1.8 Jim Bob")
  * console.log(args) // [20, 1.8, 'Jim Bob']
  */
-export class DiscordPrefixParserFluentInterface {
-    private parser: DiscordPrefixParser;
+export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
+    private parser: DiscordPrefixParser<Args>;
 
-    constructor(parser: DiscordPrefixParser) {
+    constructor(parser: DiscordPrefixParser<Args>) {
         this.parser = parser
     }
 
-    add<T>(...args: BaseArg<T>[]) {
+    add<NewArgs extends Arr>(...args: MapToBaseArg<NewArgs>): Update<[...Args, ...NewArgs]> {
         this.parser.add(...args)
-        return this
+        return this as any
     }
 
     /**
@@ -35,7 +39,7 @@ export class DiscordPrefixParserFluentInterface {
      *      <args> - 'null' if arguments were not parsed, or an array of parsed argument values of the same length and order of the added arguments.
      *      <error> - 'null' if no error was thrown, or an error message that should be sent to the end user to help them correct and retry the command.
      */
-    parse(text: string): [any[] | null, string | null] {
+    parse(text: string): [Args | null, string | null] {
         let args = null, error = null;
         try {
             args = this.parser.parse(text)
@@ -53,63 +57,63 @@ export class DiscordPrefixParserFluentInterface {
         return this.parser.example()
     }
 
-    int(...args: IntegerArgs) {
+    int(...args: IntegerArgs): Extend<Args, number> {
         this.parser.add(new IntegerArg(...args))
-        return this
+        return this as any
     }
 
-    float(...args: FloatArgs) {
+    float(...args: FloatArgs): Extend<Args, number> {
         this.parser.add(new FloatArg(...args))
-        return this
+        return this as any
     }
 
-    rest(...args: TextArgs) {
+    rest(...args: TextArgs): Extend<Args, string> {
         this.parser.add(new RestArg(...args))
-        return this
+        return this as any
     }
 
-    text(...args: TextArgs) {
+    text(...args: TextArgs): Extend<Args, string> {
         this.parser.add(new TextArg(...args))
-        return this
+        return this as any
     }
 
-    word(...args: WordArgs) {
+    word(...args: WordArgs): Extend<Args, string> {
         this.parser.add(new WordsArg(...args))
-        return this
+        return this as any
     }
 
-    words(...args: WordsArgs) {
+    words(...args: WordsArgs): Extend<Args, string> {
         this.parser.add(new WordsArg(...args))
-        return this
+        return this as any
     }
 
-    regex(...args: RegexArgs) {
+    regex(...args: RegexArgs): Extend<Args, string> {
         this.parser.add(new RegexArg(...args))
-        return this
+        return this as any
     }
 
-    user(...args: BaseArgs) {
+    user(...args: BaseArgs): Extend<Args, string> {
         this.parser.add(new DiscordUserMentionArg(...args))
-        return this
+        return this as any
     }
 
-    role(...args: BaseArgs) {
+    role(...args: BaseArgs): Extend<Args, string> {
         this.parser.add(new DiscordRoleMentionArg(...args))
-        return this
+        return this as any
     }
 
-    channel(...args: BaseArgs) {
+    channel(...args: BaseArgs): Extend<Args, string> {
         this.parser.add(new DiscordChannelMentionArg(...args))
-        return this
+        return this as any
     }
 
-    flagTrue(...args: FlagArgs) {
+    flagTrue(...args: FlagArgs): Extend<Args, boolean> {
         this.parser.add(new FlagTrueArg(...args))
-        return this
+        return this as any
     }
 
-    flagFalse(...args: FlagArgs) {
+    flagFalse(...args: FlagArgs): Extend<Args, boolean> {
         this.parser.add(new FlagFalseArg(...args))
-        return this
+        return this as any
     }
 }

@@ -5,12 +5,14 @@ import { DiscordPrefixParser } from '../src/prefix';
 
 test('matches command', () => {
     const [args, error] = prefix('!cmd').parse('!cmd')
+    args as [] // Typecheck
     expect(error).toBe(null)
     expect(args).toEqual([])
 })
 
 test('ignores command', () => {
     const [args, error] = prefix('!cmd').parse('Hey')
+    args as [] // Typecheck
     expect(error).toBe(null)
     expect(args).toEqual(null)
 })
@@ -25,12 +27,13 @@ test('prefix - parse via fluent interface', () => {
     expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
 
     const [args, error] = cmd.parse("!cmd Jim Bob 20 1.8")
+    args as [string, number, number] // Typecheck
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8])
 })
 
 test('prefix - parse via args array', () => {
-    const cmd = prefix('!cmd').add<any>(
+    const cmd = prefix('!cmd').add(
         new TextArg("Name"),
         new IntegerArg("Age", 18),
         new FloatArg("Height", 0, 3),
@@ -40,12 +43,15 @@ test('prefix - parse via args array', () => {
     expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
 
     const [args, error] = cmd.parse("!cmd Jim Bob 20 1.8")
+    args as [string, number, number] // Typecheck
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8])
 })
 
 test('prefix - parse via classes', () => {
-    const cmd = new DiscordPrefixParser('!cmd')
+    type Args = [string, number, number] // we have to manually specify args here
+    const cmd = new DiscordPrefixParser<Args>('!cmd')
+
     cmd.add(new TextArg("Name"))
     cmd.add(new IntegerArg("Age", 18))
     cmd.add(new FloatArg("Height", 0, 3))
@@ -54,6 +60,7 @@ test('prefix - parse via classes', () => {
     expect(cmd.example()).toBe('!cmd lorem ipsum 59 1.50')
 
     const args = cmd.parse("!cmd Jim Bob 20 1.8")
+    args as [string, number, number] // Typecheck
     expect(args).toEqual(['Jim Bob', 20, 1.8])
 })
 
@@ -71,6 +78,7 @@ test('prefix - many commands flag true', () => {
     expect(cmd.example()).toBe('!cmd lorem ipsum 50 50.00 <@12345> <@&12345> <#12345> --male')
 
     const [args, error] = cmd.parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <#13579> -m")
+    args as [string, number, number, boolean, string, string, string] // Typecheck
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8, true, '12345', '24680', '13579'])
 })
@@ -86,6 +94,7 @@ test('prefix - many commands flag false', () => {
         .channel("Channel")
         .parse("!cmd Jim Bob 20 1.8 <@12345> <@&24680> <#13579> Extra")
 
+    args as [string, number, number, boolean, string, string, string] // Typecheck
     expect(error).toBe(null)
     expect(args).toEqual(['Jim Bob', 20, 1.8, false, '12345', '24680', '13579'])
 })

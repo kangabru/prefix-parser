@@ -1,16 +1,12 @@
+import BaseArg from "./matchers/base";
+
+export type Arr = readonly any[]
+
 export type NameArg = [name: string]
-export type NameArgAnd<T> = Concat<[NameArg, T]>
+export type NameArgAnd<Args extends Arr> = [...NameArg, ...Args]
 
 /**
- * Concat two array types.
- * @see https://stackoverflow.com/a/64631060/3801481
- * @example
- * type T1 = ['a', 'b', 'c']
- * type T2 = ['d', 'e', 'f']
- * type TN = [1, 2, 3]
- *
- * type C = Concat<[T1, T2, TN]>; // ["a", "b", "c", "d", "e", "f", 1, 2, 3]
+ * Maps a typed tuple like '[string, number, boolean]' to '[BaseArg<string>, BaseArg<number>, BaseArg<boolean>]'
+ * @see https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-1.html#mapped-types-on-tuples-and-arrays
  */
-export type Concat<T> = T extends [infer A, ...infer Rest]
-    ? A extends any[] ? [...A, ...Concat<Rest>] : A
-    : T;
+export type MapToBaseArg<T extends Arr> = { [K in keyof T]: BaseArg<T[K]> }
