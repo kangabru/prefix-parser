@@ -5,6 +5,7 @@ import { RegexArg } from "./regex"
 
 export type TextArgs = NameArg
 export type WordArgs = NameArg
+export type FluentWordsArgs = [...args: NameArg, count?: number]
 
 type WordsOpts = { words?: number }
 export type WordsArgs = [...args: NameArg, opts?: WordsOpts]

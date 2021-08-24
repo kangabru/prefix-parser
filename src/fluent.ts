@@ -2,7 +2,7 @@ import { FlagArg, FlagArgs } from "./matchers/flag";
 import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg, MentionArgs } from "./matchers/mention";
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
 import { RegexArg, RegexArgs } from "./matchers/regex";
-import { RestArg, TextArg, TextArgs, WordArgs, WordsArg, WordsArgs } from "./matchers/text";
+import { FluentWordsArgs, RestArg, TextArg, TextArgs, WordArgs, WordsArg } from "./matchers/text";
 import { DiscordPrefixParser } from "./prefix";
 import { Arr, MapToBaseArg } from "./types";
 
@@ -81,8 +81,8 @@ export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
         return this as any
     }
 
-    words(...args: WordsArgs): Extend<Args, string> {
-        this.parser.add(new WordsArg(...args))
+    words(...[name, words = 1]: FluentWordsArgs): Extend<Args, string> {
+        this.parser.add(new WordsArg(name, { words }))
         return this as any
     }
 

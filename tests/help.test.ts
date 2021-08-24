@@ -7,11 +7,11 @@ test('help 1 word', () => {
 })
 
 test('help 2 words', () => {
-    expect(prefix('!cmd').words('Name', { words: 2 }).help()).toContain('<Name {2 words}>')
+    expect(prefix('!cmd').words('Name', 2).help()).toContain('<Name {2 words}>')
 })
 
 test('help 3 words', () => {
-    expect(prefix('!cmd').words('Name', { words: 3 }).help()).toContain('<Name {3 words}>')
+    expect(prefix('!cmd').words('Name', 3).help()).toContain('<Name {3 words}>')
 })
 
 test('help text', () => {
