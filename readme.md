@@ -49,7 +49,7 @@ const prefix = require('prefix-parser')
 
 Create commands in 3 simple steps:
 
-**1. Create command**
+**1. Create the command**
 ```js
 const prefix = require('prefix-parser')
 
@@ -62,7 +62,7 @@ const command = prefix("!rate")
 
 **2. Parse a message**
 ```js
-const content = '!rate @kangabru 10 Kang is pog --public'
+const content = '!rate @kangabru 10 Kang is pog --public' // use 'message.content' in prod
 const [args, infoOrError] = command.parse(content)
 
 console.log(args) // ['72657579', 10, 'Kang is pog', true]
@@ -92,14 +92,13 @@ Combining steps 1-3 looks like this:
 ```js
 const prefix = require('prefix-parser')
 
-const command = prefix("!rate")
+const content = '!rate @kangabru 10 Kang is pog --public' // use 'message.content' in prod
+const [args, infoOrError] = prefix("!rate")
     .user('User')
     .int('Rating', { min: 0, max: 10 })
     .text('Reason')
     .flag('Is Public', '--public')
-
-const content = '!rate @kangabru 10 Kang is pog --public'
-const [args, infoOrError] = command.parse(content)
+    .parse(content)
 
 if (infoOrError)
 {
@@ -146,14 +145,14 @@ client.on('messageCreate', message => {
 ```js
 const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
 const prefix = require('prefix-parser')
-const { channel_id, content, } = context.params.event;
+const { channel_id, content } = context.params.event;
 
 const [args, infoOrError] = prefix("!rate")
     .user('User')
     .int('Rating', { min: 0, max: 10 })
     .text('Reason')
     .flag('Is Public', '--public')
-    .parse(message.content)
+    .parse(content)
 
 if (infoOrError) {
     return lib.discord.channels['@0.1.2'].messages.create({ channel_id, content: infoOrError })
@@ -183,7 +182,7 @@ console.log(args) // ['72657579', 10, 'Kang is pog', true]
 ### Explained: `infoOrError`
 
 This is a descriptive message that should be shown to the end user.
-- It's always a string `"..."` if and info or error occurred and `null` otherwise.
+- It's always a string `"..."` if an info or error occurred and `null` otherwise.
 - Info about the command is returned if `-h` or `--help` was used on the command.
 - An error is returned if the user didn't use the command correctly.
 Args are automatically validated and users get descriptive messages about them. Errors are user friendly and render nicely in Discord.
@@ -263,7 +262,7 @@ const [seconds, prize] = args // [60, 'Win a jetski! 🚤']
 
 ### Assign
 
-Uses: `user`, `role`
+Uses: `user` `role`
 
 ```javascript
 // >assign @user @role
@@ -372,7 +371,7 @@ const [vendor, amount, itemId, notes] = args // ['12345', 123.45, 'doge_01', 'Bu
 
 Arguments are the building blocks that give your commands power. Here's every single one of them and how you can make your own.
 
-Notes that every argument *must* specific a `name` at the first argument as this is used in help and error messages.
+Note that every argument *must* specify a `name` (string) as the first argument to be used in help and error messages.
 
 ### Words
 
@@ -480,10 +479,10 @@ cmd.parse('!cmd') // >> [false, true]
 Default args not enough for you? Match custom text with [regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions).
 - `regex(name, regexp, example, options={})`
     - `regexp` (RegExp) The regular expression like `/\w+/`.
-    - `example` (string) An example of what the regex will match. This is used in error messages and *must* match the regex provided or an error will be throw when `.regex(...)` is called.
+    - `example` (string) An example of what the regex will match. This is used in error messages and *must* match the regex provided or an error will be thrownm when `.regex(...)` is called.
 
 **Options:**
-- `group` (number) The regex group index to return from the `<text>.match(<regexp>)` call. Defaults to `1`.
+- `group` (number) The regex group index to return from the `<text>.match(<regexp>)` call. Defaults to `0` (the entire match).
 
 **Returns** `string`
 
