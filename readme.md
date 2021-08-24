@@ -116,19 +116,53 @@ else if (args)
 <details><summary>See Example (Discord.js)</summary><br>
 
 ```js
-client.on('messageCreate', message => {
-    const content = message.content
+const prefix = require('prefix-parser')
 
-    return message.channel.send(`${user.username}'s avatar: ${user.displayAvatarURL({ dynamic: true })}
-});
+client.on('messageCreate', message => {
+    const [args, infoOrError] = prefix("!rate")
+        .user('User')
+        .int('Rating', { min: 0, max: 10 })
+        .text('Reason')
+        .flag('Is Public', '--public')
+        .parse(message.content)
+
+    if (infoOrError) {
+        return message.channel.send(infoOrError)
+    }
+    else if (args) {
+        return handleRateCommand(args) // Replace with Rate command logic
+    }
+
+    // Handle other commands below...
+})
 ```
 
 </details>
 
 <details><summary>See Example (Autocode)</summary><br>
 
+**Endpoint:** `message.create`
+
 ```js
-TODO
+const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
+const prefix = require('prefix-parser')
+const { channel_id, content, } = context.params.event;
+
+const [args, infoOrError] = prefix("!rate")
+    .user('User')
+    .int('Rating', { min: 0, max: 10 })
+    .text('Reason')
+    .flag('Is Public', '--public')
+    .parse(message.content)
+
+if (infoOrError) {
+    return lib.discord.channels['@0.1.2'].messages.create({ channel_id, content: infoOrError })
+}
+else if (args) {
+    return handleRateCommand(args) // Replace with Rate command logic
+}
+
+// Handle other commands below...
 ```
 
 </details>
