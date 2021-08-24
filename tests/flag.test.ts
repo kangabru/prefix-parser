@@ -109,3 +109,149 @@ test('short argument check 7 - caps', () => {
         prefix('!cmd').flag('Age', '--age', { short: '-A' })
     }).toThrow("Short command '-A' must be in the form -cmd");
 })
+
+// ** Positional flag checks **
+
+test('positional flag - first arg - start', () => {
+    const cmd = prefix('!cmd')
+        .flag('Yes', '--yes', { short: '-y' })
+        .word('First Name')
+        .word('Surname')
+
+    let [args, error] = cmd.parse('!cmd --yes Elon Musk')
+    expect(error).toBe(null)
+    expect(args).toEqual([true, 'Elon', 'Musk'])
+
+
+    let [args_, error_] = cmd.parse('!cmd -y Elon Musk')
+    expect(error_).toBe(null)
+    expect(args_).toEqual([true, 'Elon', 'Musk'])
+})
+
+test('positional flag - first arg - middle', () => {
+    const cmd = prefix('!cmd')
+        .flag('Yes', '--yes', { short: '-y' })
+        .word('First Name')
+        .word('Surname')
+
+    let [args, error] = cmd.parse('!cmd Elon --yes Musk')
+    expect(error).toBe(null)
+    expect(args).toEqual([true, 'Elon', 'Musk'])
+
+
+    let [args_, error_] = cmd.parse('!cmd Elon -y Musk')
+    expect(error_).toBe(null)
+    expect(args_).toEqual([true, 'Elon', 'Musk'])
+})
+
+test('positional flag - first arg - end', () => {
+    const cmd = prefix('!cmd')
+        .flag('Yes', '--yes', { short: '-y' })
+        .word('First Name')
+        .word('Surname')
+
+    let [args, error] = cmd.parse('!cmd Elon Musk --yes')
+    expect(error).toBe(null)
+    expect(args).toEqual([true, 'Elon', 'Musk'])
+
+
+    let [args_, error_] = cmd.parse('!cmd Elon Musk -y')
+    expect(error_).toBe(null)
+    expect(args_).toEqual([true, 'Elon', 'Musk'])
+})
+
+test('positional flag - middle arg - start', () => {
+    const cmd = prefix('!cmd')
+        .word('First Name')
+        .flag('Yes', '--yes', { short: '-y' })
+        .word('Surname')
+
+    let [args, error] = cmd.parse('!cmd --yes Elon Musk')
+    expect(error).toBe(null)
+    expect(args).toEqual(['Elon', true, 'Musk'])
+
+
+    let [args_, error_] = cmd.parse('!cmd -y Elon Musk')
+    expect(error_).toBe(null)
+    expect(args_).toEqual(['Elon', true, 'Musk'])
+})
+
+test('positional flag - middle arg - middle', () => {
+    const cmd = prefix('!cmd')
+        .word('First Name')
+        .flag('Yes', '--yes', { short: '-y' })
+        .word('Surname')
+
+    let [args, error] = cmd.parse('!cmd Elon --yes Musk')
+    expect(error).toBe(null)
+    expect(args).toEqual(['Elon', true, 'Musk'])
+
+
+    let [args_, error_] = cmd.parse('!cmd Elon -y Musk')
+    expect(error_).toBe(null)
+    expect(args_).toEqual(['Elon', true, 'Musk'])
+})
+
+test('positional flag - middle arg - end', () => {
+    const cmd = prefix('!cmd')
+        .word('First Name')
+        .flag('Yes', '--yes', { short: '-y' })
+        .word('Surname')
+
+    let [args, error] = cmd.parse('!cmd Elon Musk --yes')
+    expect(error).toBe(null)
+    expect(args).toEqual(['Elon', true, 'Musk'])
+
+
+    let [args_, error_] = cmd.parse('!cmd Elon Musk -y')
+    expect(error_).toBe(null)
+    expect(args_).toEqual(['Elon', true, 'Musk'])
+})
+
+test('positional flag - last arg - start', () => {
+    const cmd = prefix('!cmd')
+        .word('First Name')
+        .word('Surname')
+        .flag('Yes', '--yes', { short: '-y' })
+
+    let [args, error] = cmd.parse('!cmd --yes Elon Musk')
+    expect(error).toBe(null)
+    expect(args).toEqual(['Elon', 'Musk', true])
+
+
+    let [args_, error_] = cmd.parse('!cmd -y Elon Musk')
+    expect(error_).toBe(null)
+    expect(args_).toEqual(['Elon', 'Musk', true])
+})
+
+test('positional flag - last arg - middle', () => {
+    const cmd = prefix('!cmd')
+        .word('First Name')
+        .word('Surname')
+        .flag('Yes', '--yes', { short: '-y' })
+
+    let [args, error] = cmd.parse('!cmd Elon --yes Musk')
+    expect(error).toBe(null)
+    expect(args).toEqual(['Elon', 'Musk', true])
+
+
+    let [args_, error_] = cmd.parse('!cmd Elon -y Musk')
+    expect(error_).toBe(null)
+    expect(args_).toEqual(['Elon', 'Musk', true])
+})
+
+test('positional flag - last arg - end', () => {
+    const cmd = prefix('!cmd')
+        .word('First Name')
+        .word('Surname')
+        .flag('Yes', '--yes', { short: '-y' })
+
+    let [args, error] = cmd.parse('!cmd Elon Musk --yes')
+    expect(error).toBe(null)
+    expect(args).toEqual(['Elon', 'Musk', true])
+
+
+    let [args_, error_] = cmd.parse('!cmd Elon Musk -y')
+    expect(error_).toBe(null)
+    expect(args_).toEqual(['Elon', 'Musk', true])
+})

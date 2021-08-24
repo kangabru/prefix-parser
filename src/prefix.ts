@@ -1,9 +1,10 @@
-import BaseArg, { Arg } from "./matchers/base";
+import BaseArg from "./matchers/base";
 import { FlagArg, HelpFlagArg } from "./matchers/flag";
 import { Arr, MapToBaseArg } from "./types";
 
 export type PrefixParserArgs = [command: string, name?: string]
 
+type Arg = BaseArg<any>
 type Extend<Args extends Arr, T extends Arr> = DiscordPrefixParser<[...Args, ...T]>
 
 /**
@@ -26,7 +27,7 @@ type Extend<Args extends Arr, T extends Arr> = DiscordPrefixParser<[...Args, ...
 export class DiscordPrefixParser<Args extends Arr = []> {
     private prefix: string;
     private name?: string;
-    private args: BaseArg<any>[];
+    private args: Arg[];
 
     constructor(...[prefix, name]: PrefixParserArgs) {
         this.prefix = prefix
@@ -56,26 +57,41 @@ export class DiscordPrefixParser<Args extends Arr = []> {
      * @throws A string error that can be sent to end users to help them correct the command and try again.
      */
     parse(text: string): Args | null {
+        if (!text.startsWith(this.prefix)) return null
+
+        // Handle -h/--help
         const help = new HelpFlagArg().parse(text)[0]
         if (help) throw Error(this.help())
 
-        if (!text.startsWith(this.prefix))
-            return null
+        // Add a key to args so we can process them out of order
+        type KeyedArg<T extends BaseArg<T>> = T & { __key__: string }
+        const keyedArgs: KeyedArg<Arg>[] = this.args.map((arg, i) => {
+            const _arg: KeyedArg<any> = arg as any
+            _arg.__key__ = `${i}_${arg.name}`
+            return _arg
+        })
 
-        const values = []
+        // Split flags so we can process them first. Flags can be anywhere in
+        // the parse string so strip them out first so other args don't match them.
+        const [argsNorm, argsFlag] = this.splitFlagArgs(keyedArgs)
+        const args = argsFlag.concat(argsNorm)
+
+        // Process args and their values against their key
+        const valueIndex: Record<string, any> = {}
         text = text.replace(this.prefix, '').trim()
-        for (let i = 0; i < this.args.length; i++) {
-            const arg = this.args[i];
+        for (let i = 0; i < args.length; i++) {
+            const arg = args[i];
             try {
                 const [value, rest] = arg.parse(text)
-                values.push(value)
+                valueIndex[arg.__key__] = value
                 text = rest
             } catch (error) {
                 throw Error(`Invalid argument. '${arg.name}': ${error}`)
             }
         }
 
-        return values as any
+        // Return arg values in original order
+        return keyedArgs.map(arg => valueIndex[arg.__key__]) as any
     }
 
     title() {
@@ -89,18 +105,23 @@ export class DiscordPrefixParser<Args extends Arr = []> {
 
     example(): string {
         // Separate flags because they're optional so should be at the end
-        const argsNorm: Arg[] = [], argsFlag: Arg[] = []
-        this.args.forEach(arg => {
-            if ((arg as FlagArg).isFlag)
-                argsFlag.push(arg)
-            else
-                argsNorm.push(arg)
-        })
+        const [argsNorm, argsFlag] = this.splitFlagArgs(this.args)
         const argsHelp = argsNorm.concat(argsFlag).map(a => a.example()).join(' ')
         return [this.prefix, argsHelp].join(' ')
     }
 
     toString() {
         return [this.title(), this.help()].join('\n')
+    }
+
+    private splitFlagArgs<T extends Arg>(args: T[]): [T[], T[]] {
+        const argsNorm: T[] = [], argsFlag: T[] = []
+        args.forEach(arg => {
+            if ((arg as unknown as FlagArg).isFlag)
+                argsFlag.push(arg)
+            else
+                argsNorm.push(arg)
+        })
+        return [argsNorm, argsFlag]
     }
 }
