@@ -190,7 +190,7 @@ Args are automatically validated and users get descriptive messages about them. 
 
 ```js
 const [args, infoOrError] = command.parse('!rate @kangabru 10') // Omit 'reason'
-console.log(args) // 'Reason' not found
+console.log(infoOrError) // 'Reason' not found
 ```
 
 ### Explained: `--help`
@@ -297,7 +297,7 @@ const [channel, message] = args
 
 ### Invite
 
-Uses: `words`, `regex`
+Uses: `words` `regex`
 
 ```javascript
 // !invite Elon Musk elon@musk.space
@@ -383,9 +383,15 @@ const [vendor, amount, itemId, notes] = args
 
 Arguments are the building blocks that give your commands power. Here's every single one of them and how you can make your own.
 
+Notes that every argument *must* specific a `name` at the first argument as this is used in help and error messages.
+
 ### Words
 
-The `word` and `words` args match 1 or more words that include characters `a-z`, `0-9`, and `_`.
+Match 1 or more words that include characters `a-z`, `0-9`, and `_`.
+- `word(name)` matches 1 word only
+- `words(name, words=1)` matches 1 or more words
+
+**Returns** `string`
 
 ```js
 const cmd = prefix('!cmd')
@@ -393,14 +399,16 @@ const msg = '!cmd this is a sentence'
 
 cmd.word('Word').parse(msg) // >> ['this']
 cmd.words('Words', 2).parse(msg) // >> ['this is']
-cmd.words('Words', 5).parse(msg) // >> Error (there are only 4 words)
+cmd.words('Words', 5).parse(msg) // >> Error: There are only 4 words
 ```
 
 ### Text
 
-The `text` arg will look for as much text as it can that include characters `a-z`, `space`, and `_`.
+Match text within or at the end of the command:
+- `text(name)` will look for as much text as it can that include characters `a-z`, `space`, and `_`.
+- `rest(name)` will match all remaining text and must be the last argument.
 
-The `rest` arg will match all remaining text and must be the last argument.
+**Returns** `string`
 
 ```js
 const cmd = prefix('!cmd')
@@ -412,23 +420,33 @@ cmd.rest('Rest').parse(msg) // >> ['Pigs can fly. Monkeys cannot.']
 
 ### Numbers
 
-The `int` arg will match numbers and convert them to integers.
+Match numbers like `123` and `12.34`:
+- `int(name, options={})` will match numbers and convert them to integers.
+- `float(name, options={})` will match numbers and convert them to floats.
 
-The `float` arg will match numbers and convert them to floats.
+**Options:**
+- `min` (number) - The minimum value a user can enter.
+- `max` (number) - The maximum value a user can enter.
 
-Both args can take optional min/max values.
+**Returns:** `number`
 
 ```js
 const cmd = prefix('!cmd')
-    .int('Num', null, 100) // max of 100
-    .float('Num', 0) // min of 0
+    .int('Num 1')
+    .int('Num 2', { max: 100 }) // max of 100
+    .float('Num 3', { min: 0 }) // min of 0
 
-cmd.parse('!cmd 12.34 56.78') // >> ['12', '56.78']
+cmd.parse('!cmd 8 12.34 56.78') // >> [8, 12, 56.78]
 ```
 
 ### Mentions
 
-The `user`, `role`, and `channel` args will match Discord mentions and extract their IDs.
+Match Discord mention types and extract their ID numbers.
+- `user(name)` matches a mention like '@user'.
+- `role(name)` matches a mention like '@role'.
+- `channel(name)` matches a mention like '#channel'.
+
+**Returns** `string`
 
 ```js
 const cmd = prefix('!cmd')
@@ -440,33 +458,52 @@ const cmd = prefix('!cmd')
 cmd.parse('!cmd <@12345> <@&67890> <#24680>') // >> ['12345', '67890', '24680']
 ```
 
+> Discord sends mention IDs like <@!12345> and the ID '12345' is extracted.
+
 ### Flags
 
-The `flag` and `flag` flags match arguments like `--help` and `-h` and return booleans.
+Match optional flags like `--flag` which can be placed anywhere by the user.
+- `flag(name, command, options={})`
+    - `name` (string) The name of the argument uses in help messages.
+    - `command` (string) A command like `--abc` that must start with `--` and have at least 3 characters.
+
+**Options:**
+- `short` (string) The short version of the command like `-h` that must start with `-` and have 1-3 characters.
+- `storeFalse` (boolean) Make the parser return `false` instead of `true` when the flag is set by the user.
+
+**Returns** `boolean`
 
 ```js
 const cmd = prefix('!cmd')
-    .flag('A', '--alpha', '-a') // Var will be 'true' when set
-    .flag('B', '--beta', '-b') // Var will be 'false' when set
+    .flag('Allow', '--yes', { short: '-y' }) // Returns 'true' when set
+    .flag('Deny', '--no', { short: '-n', storeFalse: true }) // Returns 'false' when set
 
-// Set
-cmd.parse('!cmd -a -b') // >> [true, false]
-cmd.parse('!cmd --alpha --beta') // >> [true, false]
+// When set
+cmd.parse('!cmd --yes --no') // >> [true, false]
+cmd.parse('!cmd -y -n') // >> [true, false]
 
-// Unset
+// When unset
 cmd.parse('!cmd') // >> [false, true]
 ```
 
-### Custom
+### Regex
 
-Default args not enough for you? Use the `regex` arg for something more custom.
+Default args not enough for you? Match custom text with [regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions).
+- `regex(name, regexp, example, options={})`
+    - `regexp` (RegExp) The regular expression like `/\w+/`.
+    - `example` (string) An example of what the regex will match. This is used in error messages and *must* match the regex provided or an error will be throw when `.regex(...)` is called.
+
+**Options:**
+- `group` (number) The regex group index to return from the `<text>.match(<regexp>)` call. Defaults to `1`.
+
+**Returns** `string`
 
 ```js
 const simpleEmail = /\w+@\w+\.\w+/
-const cmd = prefix('!cmd').regex('Email', simpleEmail)
+const cmd = prefix('!cmd').regex('Email', simpleEmail, 'user@example.com')
 
 cmd.parse('!cmd user@example.com') // >> ['user@example.com']
-cmd.parse('!cmd user.example@com') // >> Error (Email not found)
+cmd.parse('!cmd user.example@com') // >> Error: Email not found
 ```
 
 > **Advanced:** *Still not enough?* Create your own parser! See the various `src/` files to see how to inherit the `BaseArg` and other args. You just need to implement the `parse` and `help` functions and it'll plug and play with everything nicely. Highly recommended to use Typescript to check input and return types.
@@ -502,7 +539,7 @@ prefix('!cmd')
     .int("Age")
     .float("Height")
     .text("Name")
-    parse("!cmd 20 1.8 Jim Bob") // >> [20, 1.8, 'Jim Bob']
+    .parse("!cmd 20 1.8 Jim Bob") // >> [20, 1.8, 'Jim Bob']
 ```
 
 ### Args Array
@@ -511,11 +548,11 @@ Sick of the fluent interface or want dynamic args? Provide them via an array ins
 
 ```js
 prefix('!cmd')
-    .args(
+    .args(...[
         new IntegerArg("Age"),
         new FloatArg("Height"),
         new RestArg("Name"),
-    )
+    ])
     .parse("!cmd 20 1.8 Jim Bob") // >> [20, 1.8, 'Jim Bob']
 ```
 
