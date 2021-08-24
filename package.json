@@ -25,7 +25,7 @@
     "/dist"
   ],
   "scripts": {
-    "test": "tsc --noEmit && jest",
+    "test": "tsc --project tsconfig.test.json && jest",
     "build": "tsc"
   },
   "devDependencies": {
