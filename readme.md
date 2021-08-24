@@ -218,8 +218,7 @@ const [args, infoOrError] = prefix("!purge")
     .int('Messages')
     .parse(content)
 
-// >> [25]
-const [messageCount] = args
+const [messageCount] = args // [25]
 ```
 
 ### Slap
@@ -232,8 +231,7 @@ const [args, infoOrError] = prefix("-slap")
     .user('User')
     .parse(content)
 
-// >> ['12345']
-const [user] = args
+const [user] = args // ['12345']
 ```
 
 ### Math
@@ -246,8 +244,7 @@ const [args, infoOrError] = prefix("*math")
     .rest('Equation')
     .parse(content)
 
-// >> ['2+2']
-const [equation] = args
+const [equation] = args // ['2+2']
 ```
 
 ### Giveaway
@@ -261,8 +258,7 @@ const [args, infoOrError] = prefix("%giveaway")
     .rest('Prize')
     .parse(content)
 
-// >> [60, 'Win a jetski! 🚤']
-const [seconds, prize] = args
+const [seconds, prize] = args // [60, 'Win a jetski! 🚤']
 ```
 
 ### Assign
@@ -276,8 +272,7 @@ const [args, infoOrError] = prefix(">assign")
     .role('Role')
     .parse(content)
 
-// >> ['12345', '12345']
-const [user, role] = args
+const [user, role] = args // ['12345', '12345']
 ```
 
 ### Announce
@@ -291,8 +286,7 @@ const [args, infoOrError] = prefix("!announce")
     .text('Message')
     .parse(content)
 
-// >> ['12345', 'I love you all']
-const [channel, message] = args
+const [channel, message] = args // ['12345', 'I love you all']
 ```
 
 ### Invite
@@ -306,8 +300,7 @@ const [args, infoOrError] = prefix("!invite")
     .regex('Email', /\w+@\w+\.\w+/, 'steve@apple.com')
     .parse(content)
 
-// >> ['Elon Musk', 'elon@musk.space']
-const [name, email] = args
+const [name, email] = args // ['Elon Musk', 'elon@musk.space']
 ```
 
 ### ASL
@@ -322,8 +315,7 @@ const [args, infoOrError] = prefix("?asl")
     .text('Location')
     .parse(content)
 
-// >> [18, 'f', 'Cali']
-const [age, gender, location] = args
+const [age, gender, location] = args // [18, 'f', 'Cali']
 ```
 
 ### Remind
@@ -339,8 +331,7 @@ const [args, infoOrError] = prefix("remind me")
     .flag('Is Public', '--public')
     .parse(content)
 
-// >> ['12345', 2, 'Organise a team game', 'true']
-const [where, days, reminder, isPublic] = args
+const [where, days, reminder, isPublic] = args // ['12345', 2, 'Organise a team game', 'true']
 ```
 
 ### Mute
@@ -356,8 +347,7 @@ const [args, infoOrError] = prefix("!mute")
     .int('Hours')
     .parse(content)
 
-// >> ['12345', 'Talking too fast', '12345', 15]
-const [where, reason, channel, days] = args
+const [where, reason, channel, days] = args // ['12345', 'Talking too fast', '12345', 15]
 ```
 
 ### Send $
@@ -373,8 +363,7 @@ const [args, infoOrError] = prefix("$send")
     .rest('Notes')
     .parse(content)
 
-// >> ['12345', 123.45, 'doge_01', 'Buying 100 dogecoins']
-const [vendor, amount, itemId, notes] = args
+const [vendor, amount, itemId, notes] = args // ['12345', 123.45, 'doge_01', 'Buying 100 dogecoins']
 ```
 
 ---
