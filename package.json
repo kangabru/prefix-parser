@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "prefix-parser",
   "description": "The easiest way to parse and validate Discord prefix commands",
   "author": "Kangabru",
@@ -26,7 +26,8 @@
   ],
   "scripts": {
     "test": "tsc --project tsconfig.test.json && jest",
-    "build": "tsc"
+    "build": "tsc",
+    "release": "npm run test && npm run build && npm publish"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.15.0",
@@ -35,5 +36,8 @@
     "@types/jest": "^27.0.1",
     "jest": "^27.0.6",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "prefix-parser": "^1.0.2"
   }
 }
