@@ -17,7 +17,7 @@ export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
         try {
             return super.parse(text)
         } catch (error) {
-            throw Error("User mention not found")
+            throw Error() // not found
         }
     }
 
@@ -39,7 +39,7 @@ export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
         try {
             return super.parse(text)
         } catch (error) {
-            throw Error("Role mention not found")
+            throw Error() // not found
         }
     }
 
@@ -61,7 +61,7 @@ export class DiscordChannelMentionArg<T = string> extends RegexArg<T> {
         try {
             return super.parse(text)
         } catch (error) {
-            throw Error("Channel mention not found")
+            throw Error() // not found
         }
     }
 

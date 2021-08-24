@@ -8,7 +8,7 @@ test('matches float', () => {
 
 test('matches float - fail', () => {
     const [args, error] = prefix('!cmd').int('age').parse('!cmd age 25')
-    expect(error).toContain('Number not found')
+    expect(error).toContain("`<age {int}>` is missing or invalid.")
     expect(args).toEqual(null)
 })
 
@@ -39,12 +39,12 @@ test('matches int - chars', () => {
 test('matches int - NaN', () => {
     const [args, error] = prefix('!cmd').int('age').parse('!cmd ---4')
     expect(args).toEqual(null)
-    expect(error).toContain('Number not found')
+    expect(error).toContain("`<age {int}>` is missing or invalid.")
 })
 
 test('matches int - text', () => {
     const [args, error] = prefix('!cmd').int('age').parse('!cmd two')
-    expect(error).toContain('Number not found')
+    expect(error).toContain("`<age {int}>` is missing or invalid.")
     expect(args).toEqual(null)
 })
 
@@ -82,4 +82,9 @@ test('arg float max', () => {
     expect(() => {
         prefix('!cmd').int('Age', { min: 10, max: 5 })
     }).toThrow("Min value '10' must be less than '5'")
+})
+
+test('missing float', () => {
+    const [_args, error] = prefix('!cmd').float('Num').parse('!cmd')
+    expect(error).toBe("`<Num {float}>` is missing or invalid. Type `!cmd --help` for info.")
 })

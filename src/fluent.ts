@@ -43,7 +43,7 @@ export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
         try {
             args = this.parser.parse(text)
         } catch (e) {
-            error = e.toString()
+            error = e.message
         }
         return [args, error]
     }

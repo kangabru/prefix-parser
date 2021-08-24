@@ -12,8 +12,8 @@ test('matches regex 1', () => {
 
 test('matches regex 1', () => {
     const [args, error] = prefix('!cmd')
-        .regex('user', simpleEmailRegex, 'test@example.com')
+        .regex('Email', simpleEmailRegex, 'test@example.com')
         .parse('!cmd jim@bob')
-    expect(error).toContain('Expression not found')
+    expect(error).toContain("`<Email {text}>` is missing or invalid. Type `!cmd --help` for info.")
     expect(args).toEqual(null)
 })

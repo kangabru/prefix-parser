@@ -86,7 +86,12 @@ export class DiscordPrefixParser<Args extends Arr = []> {
                 valueIndex[arg.__key__] = value
                 text = rest
             } catch (error) {
-                throw Error(`Invalid argument. '${arg.name}': ${error}`)
+                const message = error.message
+                const help = `Type \`${this.prefix} --help\` for info.`
+                if (message)
+                    throw Error(`\`${arg.help()}\` error: ${message}. ${help}`)
+                else
+                    throw Error(`\`${arg.help()}\` is missing or invalid. ${help}`)
             }
         }
 

@@ -29,7 +29,7 @@ export class RegexArg<T = string> extends BaseArg<T> {
 
     parse(text: string): ArgParseResponse<T> {
         const matches = text.trim().match(this.regex)
-        if (!matches) throw Error("Expression not found")
+        if (!matches) throw Error() // not found
         if (this.group >= matches.length) throw Error(`Could not get group '${this.group}' from ${matches.length} matches`)
 
         const allMatch = matches[0]

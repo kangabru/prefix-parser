@@ -30,15 +30,15 @@ class NumberArg<T = number> extends BaseArg<T> {
     parse(text: string): ArgParseResponse<T> {
         const re = /^-?[\d\.]+/g // Look for numbers like -5, 5, -5.0, 5.0
         const matches = text.trim().match(re)
-        if (!matches) throw Error("Number not found")
+        if (!matches) throw Error() // not found
         const match = matches[0]
 
         const rest = text.replace(match, '').trim()
         const value = this.float ? parseFloat(match) : parseInt(match)
 
         if (value === NaN) throw Error(`Number '${match}' could not be parsed as a number.`)
-        if (this.min !== null && value < this.min!) throw Error(`'${match}' cannot be less than '${this.min}'.`)
-        if (this.max !== null && value > this.max!) throw Error(`'${match}' cannot be more than '${this.max}'.`)
+        if (this.min !== null && value < this.min!) throw Error(`'${match}' cannot be less than '${this.min}'`)
+        if (this.max !== null && value > this.max!) throw Error(`'${match}' cannot be more than '${this.max}'`)
 
         return [value as any, rest]
     }

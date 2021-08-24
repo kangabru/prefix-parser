@@ -57,3 +57,8 @@ test('rest as last argument - fail', () => {
         prefix('!cmd').rest('Name').int('Age')
     }).toThrow("'Name' must be the last argument");
 })
+
+test('missing text', () => {
+    const [_args, error] = prefix('!cmd').text('Reason').parse('!cmd')
+    expect(error).toBe("`<Reason {text}>` is missing or invalid. Type `!cmd --help` for info.")
+})
