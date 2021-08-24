@@ -8,6 +8,9 @@ test('readme - rate', () => {
         .text('Reason')
         .flag('Is Public', '--public')
 
+    const helpText = command.parse('!rate --help')[1]
+    expect(helpText).toBe("!rate <User {@user}> <Rating {int 0~10}> <Reason {text}> <Is Public {--public}>")
+
     const [args, infoOrError] = command.parse(content)
 
     args as [string, number, string, boolean] // Typecheck

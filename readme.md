@@ -195,13 +195,11 @@ console.log(args) // 'Reason' not found
 
 ### Explained: `--help`
 
-All commands include a help flag (`-h` / `--help`) to help users use them.
+All commands include a help flag `-h` or `--help` which explain what the command is and the arguments it accepts.
 
 ```js
 const [args, infoOrError] = command.parse('!rate --help')
-
-console.log(error) // !rate <User {@user}> <Rating {int} {0-10}> <Reason {text}>
-console.log(args) // null
+console.log(infoOrError) // !rate <User {@user}> <Rating {int 0~10}> <Reason {text}> <Is Public {--public}>
 ```
 
 ---
