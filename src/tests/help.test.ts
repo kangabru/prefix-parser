@@ -1,4 +1,4 @@
-import prefix from '../src/index';
+import prefix from '../index';
 
 // Text
 

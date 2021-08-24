@@ -1,4 +1,4 @@
-import prefix from '../src/index';
+import prefix from '../index';
 
 test('matches float', () => {
     const [args, error] = prefix('!cmd').float('age').parse('!cmd 25.36')

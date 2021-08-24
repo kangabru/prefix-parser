@@ -1,4 +1,4 @@
-import prefix from '../src/index';
+import prefix from '../index';
 
 test('matches int', () => {
     const [args, error] = prefix('!cmd').int('age').parse('!cmd 25')

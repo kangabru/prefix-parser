@@ -1,4 +1,4 @@
-import prefix from '../src/index';
+import prefix from '../index';
 
 test('matches rest', () => {
     const [args, error] = prefix('!cmd').rest('name').parse('!cmd  Jim Bob 25!  is my name ')

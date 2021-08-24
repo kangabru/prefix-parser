@@ -1,4 +1,4 @@
-import prefix from '../src/index';
+import prefix from '../index';
 
 test('readme - rate', () => {
     const content = '!rate <@!12345> 10 Kang is pog --public'

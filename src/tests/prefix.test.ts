@@ -1,7 +1,7 @@
-import prefix from '../src/index';
-import { FloatArg, IntegerArg } from '../src/matchers/number';
-import { TextArg } from '../src/matchers/text';
-import { DiscordPrefixParser } from '../src/prefix';
+import prefix from '../index';
+import { FloatArg, IntegerArg } from '../matchers/number';
+import { TextArg } from '../matchers/text';
+import { DiscordPrefixParser } from '../prefix';
 
 test('matches command', () => {
     const [args, error] = prefix('!cmd').parse('!cmd')

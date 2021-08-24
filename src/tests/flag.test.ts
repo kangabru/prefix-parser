@@ -1,4 +1,4 @@
-import prefix from '../src/index';
+import prefix from '../index';
 
 test('matches flag true - set', () => {
     const [args, error] = prefix('!cmd')
