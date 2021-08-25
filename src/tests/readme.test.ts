@@ -1,4 +1,5 @@
 import prefix from '../index';
+import { formatDiscordHelp } from '../utils';
 
 test('readme - rate', () => {
     const content = '!rate <@!12345> 10 Kang is pog --public'
@@ -9,7 +10,11 @@ test('readme - rate', () => {
         .flag('Is Public', '--public')
 
     const helpText = command.parse('!rate --help')[1]
-    expect(helpText).toBe("!rate  `User {@user}`  `Rating {int 0~10}`  `Reason {text}`  `Is Public {--public}`")
+    expect(helpText).toBe(formatDiscordHelp(
+        '`!rate`',
+        "`!rate`  `User {@user}`  `Rating {int 0~10}`  `Reason {text}`  `Is Public {--public}`",
+        "`!rate <@12345> 5 lorem ipsum --public`",
+    ))
 
     const [args, infoOrError] = command.parse(content)
 

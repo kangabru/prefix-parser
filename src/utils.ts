@@ -38,3 +38,15 @@ export function loremIpsum(wordCount: number) {
 export function wrap(message: string, char: string) {
     return char + message + char
 }
+
+export function formatDiscordHelp(title: string, usage: string, example: string): string {
+    return [
+        title,
+        '',
+        '***Help***',
+        usage,
+        '',
+        '***Example***',
+        example,
+    ].join('\n')
+}

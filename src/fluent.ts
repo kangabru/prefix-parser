@@ -52,6 +52,10 @@ export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
         return this.parser.help()
     }
 
+    usage() {
+        return this.parser.usage()
+    }
+
     example() {
         return this.parser.example()
     }

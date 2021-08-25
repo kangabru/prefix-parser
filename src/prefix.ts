@@ -1,7 +1,7 @@
 import BaseArg from "./matchers/base";
 import { FlagArg, HelpFlagArg } from "./matchers/flag";
 import { Arr, MapToBaseArg } from "./types";
-import { wrap } from "./utils";
+import { formatDiscordHelp, wrap } from "./utils";
 
 export type PrefixParserArgs = [command: string, name?: string]
 
@@ -102,7 +102,11 @@ export class DiscordPrefixParser<Args extends Arr = []> {
     }
 
     help(): string {
-        return this.usage()
+        return formatDiscordHelp(
+            this.title(),
+            this.usage(),
+            this.example(),
+        )
     }
 
     /**
@@ -121,7 +125,7 @@ export class DiscordPrefixParser<Args extends Arr = []> {
      */
     usage(): string {
         const argsHelp = this.args.map(a => a.help()).map(h => wrap(h, '`')).join('  ')
-        return [this.prefix, argsHelp].join('  ')
+        return [wrap(this.prefix, '`'), argsHelp].join('  ')
     }
 
     /**
