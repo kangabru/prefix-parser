@@ -14,6 +14,6 @@ test('matches regex 1', () => {
     const [args, error] = prefix('!cmd')
         .regex('Email', simpleEmailRegex, 'test@example.com')
         .parse('!cmd jim@bob')
-    expect(error).toContain("`<Email {text}>` is missing or invalid. Type `!cmd --help` for info.")
+    expect(error).toContain("`\`Email {text}\`` is missing or invalid. Type `!cmd --help` for info.")
     expect(args).toEqual(null)
 })

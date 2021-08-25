@@ -39,7 +39,7 @@ export class RegexArg<T = string> extends BaseArg<T> {
     }
 
     help(): string {
-        return `<${this.name} {text}>`
+        return `\`${this.name} {text}\``
     }
 
     /** Returns an example of this argument as seen by end users via the help flag. */

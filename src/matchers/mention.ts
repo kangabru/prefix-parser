@@ -17,12 +17,13 @@ export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
         try {
             return super.parse(text)
         } catch (error) {
+            console.error(error)
             throw Error() // not found
         }
     }
 
     help() {
-        return `<${this.name} {@user}>`
+        return `${this.name} {@user}`
     }
 }
 
@@ -39,12 +40,13 @@ export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
         try {
             return super.parse(text)
         } catch (error) {
+            console.error(error)
             throw Error() // not found
         }
     }
 
     help() {
-        return `<${this.name} {@role}>`
+        return `${this.name} {@role}`
     }
 }
 
@@ -61,11 +63,12 @@ export class DiscordChannelMentionArg<T = string> extends RegexArg<T> {
         try {
             return super.parse(text)
         } catch (error) {
+            console.error(error)
             throw Error() // not found
         }
     }
 
     help() {
-        return `<${this.name} {#channel}>`
+        return `${this.name} {#channel}`
     }
 }

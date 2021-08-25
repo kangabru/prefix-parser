@@ -51,7 +51,7 @@ class NumberArg<T = number> extends BaseArg<T> {
             : hasMin ? ` >${this.min}`
                 : hasMax ? ` <${this.max}`
                     : ''
-        return `<${this.name} {${type}${extra}}>`
+        return `${this.name} {${type}${extra}}`
     }
 
     example() {

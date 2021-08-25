@@ -34,3 +34,7 @@ export function loremIpsum(wordCount: number) {
     const words = 'lorem ipsum dolor sit amet'.split(' ')
     return [...new Array(wordCount)].map((_, i) => words[i % words.length]).join(' ')
 }
+
+export function wrap(message: string, char: string) {
+    return char + message + char
+}

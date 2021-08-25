@@ -23,7 +23,7 @@ export class TextArg<T = string> extends RegexArg<T> {
     }
 
     help() {
-        return `<${this.name} {text}>`
+        return `${this.name} {text}`
     }
 }
 
@@ -46,7 +46,7 @@ export class RestArg<T = string> extends BaseArg<T> {
     }
 
     help() {
-        return `<${this.name} {remaining}>`
+        return `${this.name} {remaining}`
     }
 
     example() {
@@ -88,7 +88,7 @@ export class WordsArg<T = string> extends RegexArg<T> {
 
     help() {
         const s = this.words === 1 ? '' : 's'
-        return `<${this.name} {${this.words} word${s}}>`
+        return `${this.name} {${this.words} word${s}}`
     }
 
     example() {

@@ -18,12 +18,15 @@ Easily parse and validate prefix commands in Discord
 
 - 🧠 **Automatic command help**
     - 👩‍💻 `.parse('!rate --help')`
-    - 🤖 `>>`
-        ```
-        `!rate` Rate users between 0-10
-        Usage: `!rate <User {@user}> <Rating {int} {0-10}> <Reason {text}> <Reason {text}> <Is Public {-p/--public}>`
-        Example: `!rate @user 6 lorem ipsum --public`
-        ```
+    - 🤖 `>>`  `!rate`  **Rate users between 0-10**
+
+        ***Usage:***
+
+        `!rate`  `User {@user}`  `Rating {int} {0-10}`  `Reason {text}`  `Reason {text}`  `Is Public {-p/--public}`
+
+        ***Example:***
+
+        `!rate @user 6 lorem ipsum --public`
 
 ---
 

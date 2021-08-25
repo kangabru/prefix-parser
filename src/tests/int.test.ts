@@ -8,7 +8,7 @@ test('matches int', () => {
 
 test('matches int - fail', () => {
     const [args, error] = prefix('!cmd').int('age').parse('!cmd age 25')
-    expect(error).toContain("`<age {int}>` is missing or invalid.")
+    expect(error).toContain("`age {int}` is missing or invalid.")
     expect(args).toEqual(null)
 })
 
@@ -27,13 +27,13 @@ test('matches int - chars', () => {
 test('matches int - NaN', () => {
     const [args, error] = prefix('!cmd').int('age').parse('!cmd ---4')
     expect(args).toEqual(null)
-    expect(error).toContain("`<age {int}>` is missing or invalid.")
+    expect(error).toContain("`age {int}` is missing or invalid.")
 })
 
 test('matches int - text', () => {
     const [args, error] = prefix('!cmd').int('age').parse('!cmd two')
     expect(args).toEqual(null)
-    expect(error).toContain("`<age {int}>` is missing or invalid.")
+    expect(error).toContain("`age {int}` is missing or invalid.")
 })
 
 test('matches int - pass min/max', () => {
@@ -80,15 +80,15 @@ test('arg int min/max', () => {
 
 test('missing int', () => {
     const [_args, error] = prefix('!cmd').int('Num').parse('!cmd')
-    expect(error).toBe("`<Num {int}>` is missing or invalid. Type `!cmd --help` for info.")
+    expect(error).toBe("`Num {int}` is missing or invalid. Type `!cmd --help` for info.")
 })
 
 test('int too high', () => {
     const [_args, error] = prefix('!cmd').int('Num', { max: 10 }).parse('!cmd 100')
-    expect(error).toBe("`<Num {int <10}>` error: '100' cannot be more than '10'. Type `!cmd --help` for info.")
+    expect(error).toBe("`Num {int <10}` error: '100' cannot be more than '10'. Type `!cmd --help` for info.")
 })
 
 test('int too low', () => {
     const [_args, error] = prefix('!cmd').int('Num', { min: 10 }).parse('!cmd 5')
-    expect(error).toBe("`<Num {int >10}>` error: '5' cannot be less than '10'. Type `!cmd --help` for info.")
+    expect(error).toBe("`Num {int >10}` error: '5' cannot be less than '10'. Type `!cmd --help` for info.")
 })

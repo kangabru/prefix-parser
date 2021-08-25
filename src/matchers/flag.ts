@@ -55,7 +55,7 @@ export class FlagArg<T = boolean> extends BaseArg<T> {
 
     help() {
         const command = [this.long, this.short].filter(x => !!x).join('/')
-        return `<${this.name} {${command}}>`
+        return `${this.name} {${command}}`
     }
 
     example() {

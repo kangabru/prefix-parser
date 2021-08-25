@@ -1,6 +1,7 @@
 import BaseArg from "./matchers/base";
 import { FlagArg, HelpFlagArg } from "./matchers/flag";
 import { Arr, MapToBaseArg } from "./types";
+import { wrap } from "./utils";
 
 export type PrefixParserArgs = [command: string, name?: string]
 
@@ -87,11 +88,12 @@ export class DiscordPrefixParser<Args extends Arr = []> {
                 text = rest
             } catch (error) {
                 const message = error.message
-                const help = `Type \`${this.prefix} --help\` for info.`
+                const helpArg = wrap(arg.help(), '`')
+                const helpGen = `Type \`${this.prefix} --help\` for info.`
                 if (message)
-                    throw Error(`\`${arg.help()}\` error: ${message}. ${help}`)
+                    throw Error(`${helpArg} error: ${message}. ${helpGen}`)
                 else
-                    throw Error(`\`${arg.help()}\` is missing or invalid. ${help}`)
+                    throw Error(`${helpArg} is missing or invalid. ${helpGen}`)
             }
         }
 
@@ -99,24 +101,38 @@ export class DiscordPrefixParser<Args extends Arr = []> {
         return keyedArgs.map(arg => valueIndex[arg.__key__]) as any
     }
 
-    title() {
-        return this.name ? `** \`${this.prefix}\` - ${this.name} **` : `** ${this.prefix} **`
-    }
-
     help(): string {
-        const argsHelp = this.args.map(a => a.help()).join(' ')
-        return [this.prefix, argsHelp].join(' ')
+        return this.usage()
     }
 
+    /**
+     * Returns a Discord compatible message with the command and title (if provided).
+     * @example **`!rate` Rate your friends!**
+     */
+    title(): string {
+        const command = wrap(this.prefix, '`')
+        const name = this.name ? wrap(this.name, '**') : ''
+        return `${command}  ${name}`.trim()
+    }
+
+    /**
+     * Returns a Discord compatible message describing the command usage.
+     * @example !rate `User {@user}` `Score {int}`
+     */
+    usage(): string {
+        const argsHelp = this.args.map(a => a.help()).map(h => wrap(h, '`')).join('  ')
+        return [this.prefix, argsHelp].join('  ')
+    }
+
+    /**
+     * Returns a Discord compatible message with a valid example of the command.
+     * @example !rate @user 50
+     */
     example(): string {
         // Separate flags because they're optional so should be at the end
         const [argsNorm, argsFlag] = this.splitFlagArgs(this.args)
         const argsHelp = argsNorm.concat(argsFlag).map(a => a.example()).join(' ')
-        return [this.prefix, argsHelp].join(' ')
-    }
-
-    toString() {
-        return [this.title(), this.help()].join('\n')
+        return wrap([this.prefix, argsHelp].join(' '), '`')
     }
 
     private splitFlagArgs<T extends Arg>(args: T[]): [T[], T[]] {

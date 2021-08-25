@@ -60,5 +60,5 @@ test('rest as last argument - fail', () => {
 
 test('missing text', () => {
     const [_args, error] = prefix('!cmd').text('Reason').parse('!cmd')
-    expect(error).toBe("`<Reason {text}>` is missing or invalid. Type `!cmd --help` for info.")
+    expect(error).toBe("`Reason {text}` is missing or invalid. Type `!cmd --help` for info.")
 })
