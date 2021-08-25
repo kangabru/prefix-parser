@@ -18,14 +18,12 @@ Easily parse and validate prefix commands in Discord
 
 - 🧠 **Automatic command help**
     - 👩‍💻 `.parse('!rate --help')`
-    - 🤖 `>>`  `!rate`  **Rate users between 0-10**
+    - 🤖 `!rate`  **Rate your friends!**
 
         ***Usage:***
-
-        `!rate`  `User {@user}`  `Rating {int} {0-10}`  `Reason {text}`  `Reason {text}`  `Is Public {-p/--public}`
+        `!rate`  `User {@user}`  `Rating {int} {0-10}`  `Reason {text}`  `Is Public {-p/--public}`
 
         ***Example:***
-
         `!rate @user 6 lorem ipsum --public`
 
 ---
@@ -56,7 +54,7 @@ Create commands in 3 simple steps:
 ```js
 const prefix = require('prefix-parser')
 
-const command = prefix("!rate")
+const command = prefix("!rate", "Rate your friends!")
     .user('User')
     .int('Rating', { min: 0, max: 10 })
     .text('Reason')
@@ -121,7 +119,7 @@ else if (args)
 const prefix = require('prefix-parser')
 
 client.on('messageCreate', message => {
-    const [args, infoOrError] = prefix("!rate")
+    const [args, infoOrError] = prefix("!rate", , "Rate your friends!")
         .user('User')
         .int('Rating', { min: 0, max: 10 })
         .text('Reason')
@@ -150,7 +148,7 @@ const lib = require('lib')({token: process.env.STDLIB_SECRET_TOKEN});
 const prefix = require('prefix-parser')
 const { channel_id, content } = context.params.event;
 
-const [args, infoOrError] = prefix("!rate")
+const [args, infoOrError] = prefix("!rate", "Rate your friends!")
     .user('User')
     .int('Rating', { min: 0, max: 10 })
     .text('Reason')

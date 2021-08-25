@@ -3,7 +3,7 @@ import { formatDiscordHelp } from '../utils';
 
 test('readme - rate', () => {
     const content = '!rate <@!12345> 10 Kang is pog --public'
-    const command = prefix("!rate")
+    const command = prefix("!rate", "Rate your friends!")
         .user('User')
         .int('Rating', { min: 0, max: 10 })
         .text('Reason')
@@ -11,7 +11,7 @@ test('readme - rate', () => {
 
     const helpText = command.parse('!rate --help')[1]
     expect(helpText).toBe(formatDiscordHelp(
-        '`!rate`',
+        '`!rate`  **Rate your friends!**',
         "`!rate`  `User {@user}`  `Rating {int 0~10}`  `Reason {text}`  `Is Public {--public}`",
         "`!rate <@12345> 5 lorem ipsum --public`",
     ))
