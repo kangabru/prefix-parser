@@ -475,6 +475,21 @@ cmd.parse('!cmd -y -n') // >> [true, false]
 cmd.parse('!cmd') // >> [false, true]
 ```
 
+### Urls
+
+Match urls.
+- `url(name)` matches a url like [www.discord.gg](www.discord.gg).
+
+**Returns** `string`
+
+```js
+const cmd = prefix('!cmd')
+    .url('Link')
+
+// User types: !cmd @kangabru @admin #general
+cmd.parse('!cmd www.discord.gg') // >> ['www.discord.gg']
+```
+
 ### Regex
 
 Default args not enough for you? Match custom text with [regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions).
