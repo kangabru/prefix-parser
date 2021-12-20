@@ -6,7 +6,7 @@ type FlagOpts = { short?: string, storeFalse?: boolean }
 export type FlagArgs = [...args: NameArg, long: string, opts?: FlagOpts]
 
 /** Returns 'true' if it matches a flag anywhere in the text like '--help' or '-h' (long and short version respectively). */
-export class FlagArg<T = boolean> extends BaseArg<T> {
+export class FlagArg extends BaseArg<boolean> {
     isFlag = true
     long: string; short?: string; storeFalse: boolean;
 
@@ -29,7 +29,7 @@ export class FlagArg<T = boolean> extends BaseArg<T> {
         }
     }
 
-    parse(text: string): ArgParseResponse<T> {
+    parse(text: string): ArgParseResponse<boolean> {
         const longWord = this.long.split('-').join('')
         const shortWord = this.short ? this.short.split('-').join('') : ""
 

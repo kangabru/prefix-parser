@@ -6,7 +6,7 @@ type RegexOpts = { group?: number }
 export type RegexArgs = [...args: NameArg, regex: RegExp, example: string, opts?: RegexOpts]
 
 /** A generic regex parser which can match regex and extract a single regex group. */
-export class RegexArg<T = string> extends BaseArg<T> {
+export class RegexArg<T> extends BaseArg<T> {
     private _example: string
     private regex: RegExp
     private group: number

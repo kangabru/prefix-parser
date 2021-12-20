@@ -17,7 +17,7 @@ export type WordsArgs = [...args: NameArg, opts?: WordsOpts]
  * const args = prefix('!cmd').text('name').parse('!cmd Jim Bob! is my name')
  * console.log(args) // 'Jim Bob'
  */
-export class TextArg<T = string> extends RegexArg<T> {
+export class TextArg extends RegexArg<string> {
     constructor(...[name]: TextArgs) {
         super(name, /[a-zA-Z_-\s]+/, loremIpsum(2))
     }
@@ -34,8 +34,8 @@ export class TextArg<T = string> extends RegexArg<T> {
  * const args = prefix('!cmd').text('name').parse('!cmd Jim Bob!')
  * console.log(args) // 'Jim Bob! is my name'
  */
-export class RestArg<T = string> extends BaseArg<T> {
-    parse(text: string): ArgParseResponse<T> {
+export class RestArg extends BaseArg<string> {
+    parse(text: string): ArgParseResponse<string> {
         if (!text.length)
             throw Error("Text cannot be empty")
         return [text as any, ""]
@@ -64,7 +64,7 @@ export class RestArg<T = string> extends BaseArg<T> {
  * args = prefix('!cmd').words('name', 2).parse('!cmd Jim Bob rules')
  * console.log(args) // 'Jim Bob'
  */
-export class WordsArg<T = string> extends RegexArg<T> {
+export class WordsArg extends RegexArg<string> {
     private words: number
     constructor(...[name, opts = {}]: WordsArgs) {
         const { words = 1 } = opts
@@ -77,7 +77,7 @@ export class WordsArg<T = string> extends RegexArg<T> {
         assertGreaterThan(_words, 0)
     }
 
-    parse(text: string): ArgParseResponse<T> {
+    parse(text: string): ArgParseResponse<string> {
         try {
             return super.parse(text)
         } catch (error) {

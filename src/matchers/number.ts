@@ -10,7 +10,7 @@ export type IntegerArgs = MinMaxArgs
 export type FloatArgs = MinMaxArgs
 
 /** Matches the next valid number using 'parseInt' and 'parseFloat' for the respective type. */
-class NumberArg<T = number> extends BaseArg<T> {
+class NumberArg extends BaseArg<number> {
     min?: number; max?: number; float: boolean;
 
     constructor(...[name, opts = {}]: NumberArgs) {
@@ -27,7 +27,7 @@ class NumberArg<T = number> extends BaseArg<T> {
         this.max = (float || isVoid(max)) ? max : Math.floor(max!)
     }
 
-    parse(text: string): ArgParseResponse<T> {
+    parse(text: string): ArgParseResponse<number> {
         const re = /^-?[\d\.]+/g // Look for numbers like -5, 5, -5.0, 5.0
         const matches = text.trim().match(re)
         if (!matches) throw Error() // not found
