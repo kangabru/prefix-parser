@@ -39,6 +39,11 @@ export function wrap(message: string, char: string) {
     return char + message + char
 }
 
+/** Removes each character in chars from text. */
+export function clean(text: string, chars: string) {
+    return chars.split('').reduce((out, char) => out.split(char).join(''), text)
+}
+
 export function formatDiscordHelp(title: string, usage: string, example: string): string {
     return [
         title,

@@ -86,7 +86,7 @@ export class DiscordPrefixParser<Args extends Arr = []> {
                 const [value, rest] = arg.parse(text)
                 valueIndex[arg.__key__] = value
                 text = rest
-            } catch (error) {
+            } catch (error: any) {
                 const message = error.message
                 const helpArg = wrap(arg.help(), '`')
                 const helpGen = `Type \`${this.prefix} --help\` for info.`

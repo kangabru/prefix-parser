@@ -14,6 +14,12 @@ test('matches user mention 2', () => {
     expect(args).toEqual(['12345'])
 })
 
+test('matches user mention 3', () => {
+    const [args, error] = prefix('!cmd').user('User').parse('!cmd 12345')
+    expect(error).toBe(null)
+    expect(args).toEqual(['12345'])
+})
+
 test('matches user no mention 1', () => {
     const [args, error] = prefix('!cmd').user('User').parse('!cmd <@!hey>')
     expect(error).toContain("`User {@user}` is missing or invalid. Type `!cmd --help` for info.")
@@ -22,8 +28,14 @@ test('matches user no mention 1', () => {
 
 // ** Role **
 
-test('matches role mention', () => {
+test('matches role mention 1', () => {
     const [args, error] = prefix('!cmd').role('Role').parse('!cmd <@&12345>')
+    expect(error).toBe(null)
+    expect(args).toEqual(['12345'])
+})
+
+test('matches role mention 2', () => {
+    const [args, error] = prefix('!cmd').role('Role').parse('!cmd 12345')
     expect(error).toBe(null)
     expect(args).toEqual(['12345'])
 })
@@ -36,8 +48,14 @@ test('matches role no mention', () => {
 
 // ** Channel **
 
-test('matches channel mention', () => {
+test('matches channel mention 1', () => {
     const [args, error] = prefix('!cmd').channel('Channel').parse('!cmd <#12345>')
+    expect(error).toBe(null)
+    expect(args).toEqual(['12345'])
+})
+
+test('matches channel mention 2', () => {
+    const [args, error] = prefix('!cmd').channel('Channel').parse('!cmd 12345')
     expect(error).toBe(null)
     expect(args).toEqual(['12345'])
 })

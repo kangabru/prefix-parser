@@ -1,4 +1,5 @@
 import { NameArg } from "../types"
+import { clean } from "../utils"
 import { ArgParseResponse } from "./base"
 import { RegexArg } from "./regex"
 
@@ -8,14 +9,16 @@ export type MentionArgs = NameArg
  * Matches a Discord user mention like <@!12345> or <@12345>.
  * @see https://discordjs.guide/miscellaneous/parsing-mention-arguments.html#how-discord-mentions-work
  */
-export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
+export class DiscordUserMentionArg extends RegexArg<string> {
     constructor(...[name]: MentionArgs) {
-        super(name, /^\<\@\!?(\d+)\>/, '<@12345>', { group: 1 })
+        super(name, /^(\d{5,}|\<\@\!?\d{5,}\>)/, '<@12345>', { group: 1 })
     }
 
-    parse(text: string): ArgParseResponse<T> {
+    parse(text: string): ArgParseResponse<string> {
         try {
-            return super.parse(text)
+            const [match, msg] = super.parse(text)
+            const matchClean = clean(match, '<@!>')
+            return [matchClean, msg]
         } catch (error) {
             console.error(error)
             throw Error() // not found
@@ -31,14 +34,16 @@ export class DiscordUserMentionArg<T = string> extends RegexArg<T> {
  * Matches a Discord role mention like <@&12345>.
  * @see https://discordjs.guide/miscellaneous/parsing-mention-arguments.html#how-discord-mentions-work
  */
-export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
+export class DiscordRoleMentionArg extends RegexArg<string> {
     constructor(...[name]: MentionArgs) {
-        super(name, /^\<\@\&(\d+)\>/, '<@&12345>', { group: 1 })
+        super(name, /^(\d{5,}|\<\@\&\d{5,}\>)/, '<@&12345>', { group: 1 })
     }
 
-    parse(text: string): ArgParseResponse<T> {
+    parse(text: string): ArgParseResponse<string> {
         try {
-            return super.parse(text)
+            const [match, msg] = super.parse(text)
+            const matchClean = clean(match, '<@&>')
+            return [matchClean, msg]
         } catch (error) {
             console.error(error)
             throw Error() // not found
@@ -54,14 +59,16 @@ export class DiscordRoleMentionArg<T = string> extends RegexArg<T> {
  * Matches a Discord channel mention like <#12345>.
  * @see https://discordjs.guide/miscellaneous/parsing-mention-arguments.html#how-discord-mentions-work
  */
-export class DiscordChannelMentionArg<T = string> extends RegexArg<T> {
+export class DiscordChannelMentionArg extends RegexArg<string> {
     constructor(...[name]: MentionArgs) {
-        super(name, /^\<\#(\d+)\>/, '<#12345>', { group: 1 })
+        super(name, /^(\d{5,}|\<\#\d{5,}\>)/, '<#12345>', { group: 1 })
     }
 
-    parse(text: string): ArgParseResponse<T> {
+    parse(text: string): ArgParseResponse<string> {
         try {
-            return super.parse(text)
+            const [match, msg] = super.parse(text)
+            const matchClean = clean(match, '<@#>')
+            return [matchClean, msg]
         } catch (error) {
             console.error(error)
             throw Error() // not found

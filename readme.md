@@ -431,9 +431,9 @@ cmd.parse('!cmd 8 12.34 56.78') // >> [8, 12, 56.78]
 ### Mentions
 
 Match Discord mention types and extract their ID numbers.
-- `user(name)` matches a mention like '@user'.
-- `role(name)` matches a mention like '@role'.
-- `channel(name)` matches a mention like '#channel'.
+- `user(name)` matches a mention like '@user' or a raw ID like '12345'.
+- `role(name)` matches a mention like '@role' or a raw ID like '12345'.
+- `channel(name)` matches a mention like '#channel' or a raw ID like '12345'.
 
 **Returns** `string`
 
