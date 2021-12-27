@@ -1,5 +1,5 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "name": "prefix-parser",
   "description": "The easiest way to parse and validate Discord prefix commands",
   "author": "Kangabru",
