@@ -3,6 +3,7 @@ import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg,
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
 import { RegexArg, RegexArgs } from "./matchers/regex";
 import { FluentWordsArgs, RestArg, TextArg, TextArgs, WordArgs, WordsArg } from "./matchers/text";
+import { TimeArg, TimeArgs } from "./matchers/time";
 import { UrlArg, UrlArgs } from "./matchers/url";
 import { DiscordPrefixParser } from "./prefix";
 import { Arr, MapToBaseArg } from "./types";
@@ -118,6 +119,11 @@ export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
 
     url(...args: UrlArgs): Extend<Args, string> {
         this.parser.add(new UrlArg(...args))
+        return this as any
+    }
+
+    time(...args: TimeArgs): Extend<Args, string> {
+        this.parser.add(new TimeArg(...args))
         return this as any
     }
 }

@@ -428,6 +428,28 @@ const cmd = prefix('!cmd')
 cmd.parse('!cmd 8 12.34 56.78') // >> [8, 12, 56.78]
 ```
 
+### Time
+
+Match time args like `30s`, `5m`, `2h`, `1d`, and returns the value in seconds.
+- `time(name, options={})` will match times and convert them to seconds.
+
+**Options:**
+- `min` (string) - The minimum time a user can enter e.g. `10s`
+- `max` (string) - The maximum time a user can enter e.g. `2h`
+
+**Returns** `number`
+
+> Note: s=seconds, m=minutes, h=hours, d=days
+
+```js
+const cmd = prefix('!cmd')
+    .time('Time 1')
+    .time('Time 2', { min: '5m' })
+    .time('Time 3', { max: '1d' })
+
+cmd.parse('!cmd 30s 10m 2h') // >> [30, 600, 7200]
+```
+
 ### Mentions
 
 Match Discord mention types and extract their ID numbers.
@@ -486,7 +508,6 @@ Match urls.
 const cmd = prefix('!cmd')
     .url('Link')
 
-// User types: !cmd @kangabru @admin #general
 cmd.parse('!cmd www.discord.gg') // >> ['www.discord.gg']
 ```
 
