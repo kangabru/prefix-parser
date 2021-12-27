@@ -17,3 +17,11 @@ test('matches regex 1', () => {
     expect(error).toContain("`\`Email {text}\`` is missing or invalid. Type `!cmd --help` for info.")
     expect(args).toEqual(null)
 })
+
+test('bad example error message', () => {
+    expect(() => {
+        prefix('!cmd')
+            .regex('Email', simpleEmailRegex, 'test@example@com')
+            .parse('!cmd jim@bob')
+    }).toThrow("Could not parse the example 'test@example@com'")
+})

@@ -34,8 +34,16 @@ export default class BaseArg<T> {
 
     validateArg() {
         assert(this.help().length > 0, 'Help message should be populated')
-        assert(this.example().length > 0, 'Example message should be populated')
-        const [value, error] = this.parse(this.example())
+        const example = this.example()
+        assert(example.length > 0, 'Example message should be populated')
+
+        let value = null, error = ""
+        try {
+            [value, error] = this.parse(example)
+        } catch (e) {
+            console.error('Error parsing example:', e)
+            throw Error(`Could not parse the example '${example}'`)
+        }
         assert(!error, 'Parsing the example should not return errors')
         assert(isPopulated(value), 'Parsing the example should return a value')
     }
