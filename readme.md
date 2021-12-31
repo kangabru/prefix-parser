@@ -450,6 +450,20 @@ const cmd = prefix('!cmd')
 cmd.parse('!cmd 30s 10m 2h') // >> [30, 600, 7200]
 ```
 
+### Emoji
+
+Match emoji args like `🙂` and `<:custom:789123>`.
+- `emoji(name)` will match emojis.
+
+**Returns** `string`
+
+```js
+const cmd = prefix('!cmd')
+    .emoji('Emoji')
+
+cmd.parse('!cmd 🔥') // >> ["🔥"]
+```
+
 ### Mentions
 
 Match Discord mention types and extract their ID numbers.

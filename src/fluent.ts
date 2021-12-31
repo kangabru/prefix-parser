@@ -1,3 +1,4 @@
+import { EmojiArg, EmojiArgs } from "./matchers/emoji";
 import { FlagArg, FlagArgs } from "./matchers/flag";
 import { DiscordChannelMentionArg, DiscordRoleMentionArg, DiscordUserMentionArg, MentionArgs } from "./matchers/mention";
 import { FloatArg, FloatArgs, IntegerArg, IntegerArgs } from "./matchers/number";
@@ -124,6 +125,11 @@ export class DiscordPrefixParserFluentInterface<Args extends Arr = []> {
 
     time(...args: TimeArgs): Extend<Args, string> {
         this.parser.add(new TimeArg(...args))
+        return this as any
+    }
+
+    emoji(...args: EmojiArgs): Extend<Args, string> {
+        this.parser.add(new EmojiArg(...args))
         return this as any
     }
 }
